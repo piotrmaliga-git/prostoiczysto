@@ -21,7 +21,7 @@ Use Orchestrator when a request needs a project change: a feature, bug fix, refa
    - `README.md` for project purpose, precedence, and document map.
    - `docs/product/product-requirements.md` for visitor-facing behavior and business facts.
    - `docs/product/design-and-assets.md` for relevant assets and unconfirmed visual details.
-   - `docs/technical/technical-architecture.md` for stack and technical constraints.
+   - `docs/technical/technical-architecture.md` for technical constraints, and `docs/technical/testing.md` when work changes tests or acceptance behavior.
 2. Identify existing patterns and inspect the files likely to change. Keep scope precise. Do not assume the `prostoiczysto` app exists unless it is present in the workspace.
 3. If a business fact or material design decision is unconfirmed, ask the user before delegation. Do not invent prices, copy, contact details, or other business facts.
 4. For implementation requests, invoke the **Executor** custom agent as a subagent. Send a self-contained handoff; do not assume it can see this conversation, your reasoning, or files you have not named.
