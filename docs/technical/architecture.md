@@ -4,14 +4,12 @@ This document is the authoritative description of the repository structure, Angu
 
 Technical implementation constraints and runtime behavior are specified in [Technical requirements](./technical-requirements.md). Product behavior is specified in [Product requirements](../product/product-requirements.md).
 
-The legacy visual reference at `../images/architektura.png` must not override this document.
-
 ## Textual project structure
 
-The application is scaffolded at `prostoiczysto/`, with Angular's source files under `src/`. This structure is authoritative; do not infer additional folders or alternate names from the architecture image.
+The repository root contains project documentation and GitHub configuration. The Angular application is scaffolded in the repository-root `prostoiczysto/` directory. All application paths described below are relative to that directory unless explicitly prefixed with `.github/` or `docs/`. Do not create a second nested `prostoiczysto/` directory.
 
 ```text
-prostoiczysto/
+repository-root/
 ├── .github/
 │   ├── agents/
 │   │   ├── orchestrator.agent.md
@@ -27,43 +25,45 @@ prostoiczysto/
 │   │   ├── technical-requirements.md
 │   │   └── testing.md
 │   └── images/
-├── e2e/
-│   └── [Playwright tests and fixtures]
-├── public/
-│   ├── favicon.ico or favicon.svg
-│   ├── robots.txt
-│   └── sitemap.xml
-├── src/
-│   ├── app/
-│   │   ├── pages/
-│   │   ├── components/
-│   │   ├── shared/
-│   │   │   └── ui/
-│   │   ├── routes/
-│   │   ├── service/
-│   │   ├── pipes/
-│   │   └── utils/
-│   ├── assets/
-│   │   └── i18n/
-│   │       ├── pl.json
-│   │       └── en.json
-│   ├── environments/
-│   │   ├── environment.ts
-│   │   └── environment.development.ts
-│   ├── styles/
-│   ├── index.html
-│   ├── main.ts
-│   └── main.server.ts
-├── angular.json
-├── package.json
-├── package-lock.json
-├── tsconfig.app.json
-├── tsconfig.spec.json
-├── vitest.config.ts
-└── playwright.config.ts
+├── README.md
+└── prostoiczysto/
+    ├── e2e/
+    │   └── [Playwright tests and fixtures]
+    ├── public/
+    │   ├── favicon.ico or favicon.svg
+    │   ├── robots.txt
+    │   └── sitemap.xml
+    ├── src/
+    │   ├── app/
+    │   │   ├── pages/
+    │   │   ├── components/
+    │   │   ├── shared/
+    │   │   │   └── ui/
+    │   │   ├── routes/
+    │   │   ├── service/
+    │   │   ├── pipes/
+    │   │   └── utils/
+    │   ├── assets/
+    │   │   └── i18n/
+    │   │       ├── pl.json
+    │   │       └── en.json
+    │   ├── environments/
+    │   │   ├── environment.ts
+    │   │   └── environment.development.ts
+    │   ├── styles/
+    │   ├── index.html
+    │   ├── main.ts
+    │   └── main.server.ts
+    ├── angular.json
+    ├── package.json
+    ├── package-lock.json
+    ├── tsconfig.app.json
+    ├── tsconfig.spec.json
+    ├── vitest.config.ts
+    └── playwright.config.ts
 ```
 
-The exact scaffold may place SSR and server configuration files in additional Angular-generated locations. Do not move or rename the application layers above unless a task explicitly updates this architecture.
+The exact scaffold may place SSR and server configuration files in additional Angular-generated locations. Do not move or rename the application layers above unless a task explicitly updates this architecture. Repository-level GitHub workflows must run application commands from `prostoiczysto/`.
 
 ## Folder responsibilities
 

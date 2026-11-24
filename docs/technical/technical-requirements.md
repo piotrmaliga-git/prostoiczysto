@@ -2,6 +2,8 @@
 
 This document defines the application's technical constraints and cross-cutting requirements. Project structure and responsibility boundaries are documented separately in [Project architecture](./architecture.md). Key test behaviors are documented separately in [Testing](./testing.md). Visitor-facing behavior is specified in [Product requirements](../product/product-requirements.md).
 
+Unless stated otherwise, application paths in this document are relative to the repository-root `prostoiczysto/` directory.
+
 ## Stack and engineering constraints
 
 - At scaffold time, use the latest stable Node.js LTS release and latest stable compatible npm release. Record the exact versions in the repository's runtime/package-manager configuration and use those same versions in CI.
@@ -16,7 +18,7 @@ This document defines the application's technical constraints and cross-cutting 
 - Use the latest stable Tailwind CSS at scaffold time plus CSS variables for theming.
 - Use Transloco for i18n.
 - Use Vitest for unit/component tests and Playwright for E2E tests; see [Testing](./testing.md).
-- Follow Angular conventions and [Project architecture](./architecture.md). The older architecture image at `../images/architektura.png` is only a visual reference and is not an implementation authority.
+- Follow Angular conventions and [Project architecture](./architecture.md). Run application commands from the repository-root `prostoiczysto/` directory.
 - Use Oxlint for linting and Oxfmt for formatting. They are separate Oxc tools: `npm run lint` runs `oxlint`, and `npm run format:check` runs `oxfmt --check`. Do not install or configure ESLint or Prettier.
 - Guard browser-only API calls (`localStorage`, `window`, `document`, `matchMedia`, `IntersectionObserver`) with `isPlatformBrowser` or `afterNextRender`, so SSR/prerender does not break.
 - Do not use `ng new` interactive prompts; pass all flags explicitly for a reproducible scaffold.

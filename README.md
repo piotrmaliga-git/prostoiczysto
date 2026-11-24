@@ -1,6 +1,6 @@
 # Prosto i Czysto — project overview
 
-This is the entry point and source map for the Prosto i Czysto landing-page project. The deliverable is a complete, runnable app in `prostoiczysto`, with a README.
+This is the repository-level entry point and source map for the Prosto i Czysto landing-page project. The Angular application belongs in the repository-root `prostoiczysto/` directory; keep project documentation and GitHub configuration at the repository root.
 
 ## Start here
 
@@ -29,13 +29,12 @@ The site promotes vinyl record cleaning and flattening. Polish is the primary la
 - Run relevant build, lint, unit, and browser checks after changes.
 - If something is ambiguous or an asset is missing or unreadable, do not guess silently: preserve the relevant placeholder and record it only in the designated product or technical document.
 - Keep the implementation simple, follow Angular conventions, separate responsibilities appropriately, and prefer maintainable solutions over unnecessary complexity.
-- Keep source code and developer-facing identifiers in English. Add customer-facing copy to `src/assets/i18n/en.json` first and translate it into `src/assets/i18n/pl.json` under the same keys.
+- Keep source code and developer-facing identifiers in English. Add customer-facing copy to `prostoiczysto/src/assets/i18n/en.json` first and translate it into `prostoiczysto/src/assets/i18n/pl.json` under the same keys.
 - Direct `/pl` and `/en` routes determine the displayed language. On `/`, match Polish or English device browser languages and fall back to Polish for unsupported locales.
 
 ## Precedence
 
 - The textual project structure in [Project architecture](docs/technical/architecture.md) wins for folder structure and layering.
-- The architecture image at `docs/images/architektura.png` is retained only as a visual reference and must not override the separate architecture document.
 - The written product and technical requirements win for behavior.
 - If a relevant detail is not confirmed, preserve it as a placeholder in the relevant product or technical document.
 - Keep each requirement in its designated document and link to it instead of duplicating it elsewhere.
@@ -44,7 +43,6 @@ The site promotes vinyl record cleaning and flattening. Polish is the primary la
 
 Source assets are in `docs/images/`:
 
-- `docs/images/architektura.png` — legacy visual architecture reference; the authoritative structure is documented in text in [Project architecture](docs/technical/architecture.md).
 - `docs/images/prosto_i_czysto_wizytówka.png` — primary visual reference.
 - `docs/images/photo_ex.jpg` — shared placeholder image for the About, Machines, and Gallery page sections until final photos are available.
 

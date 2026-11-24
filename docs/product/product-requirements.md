@@ -75,7 +75,7 @@ Keep the section order below. It follows the intended landing-page flow: hook, i
 
 ## Shared UI kit
 
-There is no existing design-system library. Build a small internal kit in `src/app/shared/ui` before sections use it. Components must be standalone, OnPush, accessible by default, and support `data-testid`.
+There is no existing design-system library. Build a small internal kit in `prostoiczysto/src/app/shared/ui` before sections use it. Components must be standalone, OnPush, accessible by default, and support `data-testid`.
 
 - Button: primary, secondary, and ghost variants; sizes; loading/disabled states; optional `<a>` rendering.
 - Modal: focus trap, Escape to close, focus returns to trigger; reused by the gallery lightbox.

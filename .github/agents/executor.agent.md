@@ -29,7 +29,7 @@ If essential context is missing or the requirements conflict, do not guess. Ask 
 3. Preserve unrelated work and existing behavior. Do not overwrite or revert changes outside the assigned scope.
 4. Add or update focused tests only for behavior introduced or fixed by this task.
 5. Run the smallest relevant checks available. Use the repository's configured scripts and tools; do not install dependencies unless a manifest changed or validation proves a dependency is missing.
-6. If a check fails, determine whether the failure is caused by this change. Fix in-scope issues and rerun affected checks. Report unrelated baseline failures without changing unrelated code.
+6. If a check fails, determine whether the failure is caused by this change. Make at most one focused correction pass and rerun affected checks. If the check still fails, or the issue is unrelated to the assigned scope, stop and report it to Orchestrator rather than continuing to iterate.
 
 ## Project constraints
 
@@ -39,6 +39,7 @@ If essential context is missing or the requirements conflict, do not guess. Ask 
 - Use Vitest for unit tests, Oxlint for linting, and Oxfmt for formatting. Do not add ESLint or Prettier.
 - Use `docs/images/photo_ex.jpg` as the shared temporary source image for About, Machines, and Gallery unless the task explicitly changes this requirement.
 - Use npm and the configured project scripts for Node.js work. Do not assume the app or its scripts exist; inspect the workspace first.
+- The Angular application belongs in the repository-root `prostoiczysto/` directory. Keep repository-level documentation and GitHub configuration outside that application directory.
 
 ## Boundaries
 
@@ -50,8 +51,10 @@ If essential context is missing or the requirements conflict, do not guess. Ask 
 
 Report:
 
+- Overall status: complete, incomplete, or blocked.
 - Files changed and a concise description of each change.
-- Acceptance criteria met or not met.
+- Acceptance criteria met or not met, including any criteria left incomplete.
 - Exact commands/checks run and their outcomes.
+- Correction passes used.
 - Any assumptions, blockers, or unrelated failures.
 - Any follow-up required from Orchestrator or the user.
