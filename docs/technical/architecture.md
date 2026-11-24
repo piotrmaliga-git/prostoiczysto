@@ -44,6 +44,12 @@ prostoiczysto/
 │   │   ├── pipes/
 │   │   └── utils/
 │   ├── assets/
+│   │   └── i18n/
+│   │       ├── pl.json
+│   │       └── en.json
+│   ├── environments/
+│   │   ├── environment.ts
+│   │   └── environment.development.ts
 │   ├── styles/
 │   ├── index.html
 │   ├── main.ts
@@ -107,6 +113,21 @@ The exact scaffold may place SSR and server configuration files in additional An
 - Contains bundled application assets such as responsive copies of placeholder images and local font files.
 - Source assets remain in `docs/images/` and must not be edited in place as an implementation step.
 
+### `src/assets/i18n/`
+
+- Contains the Transloco JSON dictionaries:
+  - `pl.json` for Polish.
+  - `en.json` for English.
+- Polish and English must have the same translation keys.
+- The loader must support server-side loading during prerender and client-side loading after hydration.
+
+### `src/environments/`
+
+- Contains build environment configuration.
+- `environment.ts` is the production environment configuration.
+- `environment.development.ts` is the development environment override.
+- The Formspree endpoint belongs in environment configuration and must not be hard-coded in a component or service.
+
 ### `src/styles/`
 
 - Contains global styles, Tailwind entry styles, theme variables, and reset/base styles.
@@ -129,6 +150,7 @@ The exact scaffold may place SSR and server configuration files in additional An
 - Pipes and utilities must remain independent of page and component state.
 - Product facts, machine constants, FAQ translation keys, and marketing placeholders live in constants or localization files.
 - Product facts, machine constants, FAQ translation keys, and marketing placeholders must not be duplicated across components.
+- Transloco translation dictionaries in `src/assets/i18n/` must not contain environment secrets or deployment configuration.
 
 ## Application state and configuration
 
