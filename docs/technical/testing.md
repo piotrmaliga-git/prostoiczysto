@@ -63,4 +63,4 @@ Verify:
 - Use Angular DevTools hydration overlay to verify any deferred interactive island stays dehydrated until its trigger, then hydrates without visual jumps.
 - Playwright must fail on console errors or hydration warnings.
 
-See [SSR and hydration](./technical-architecture.md#ssr-and-hydration) for implementation constraints.
+See [SSR and hydration](./technical-requirements.md#ssr-and-hydration) for implementation constraints.

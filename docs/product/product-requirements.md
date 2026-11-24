@@ -1,6 +1,6 @@
 # Product requirements
 
-This document defines what the Prosto i Czysto landing page must contain and how its visitor-facing features behave. Technical implementation constraints live in [Technical architecture](../technical/technical-architecture.md).
+This document defines what the Prosto i Czysto landing page must contain and how its visitor-facing features behave. Technical implementation constraints live in [Technical requirements](../technical/technical-requirements.md).
 
 ## Business and audience
 
@@ -79,7 +79,7 @@ There is no existing design-system library. Build a small internal kit in `src/a
 - Icon.
 - Accordion: native `<details>` / `<summary>`, used by FAQ.
 
-All kit components must follow the hydration-safe rules in [Technical architecture](../technical/technical-architecture.md).
+All kit components must follow the hydration-safe rules in [Technical requirements](../technical/technical-requirements.md).
 
 ## Visitor-facing features
 

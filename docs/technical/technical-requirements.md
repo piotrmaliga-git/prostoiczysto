@@ -1,11 +1,12 @@
-# Technical architecture
+# Technical requirements
 
-This document defines the application's technical architecture and cross-cutting requirements. Key test behaviors are documented separately in [Testing](./testing.md). Visitor-facing behavior is specified in [Product requirements](../product/product-requirements.md).
+This document defines the application's technical constraints and cross-cutting requirements. Project structure and responsibility boundaries are documented separately in [Project architecture](./architecture.md). Key test behaviors are documented separately in [Testing](./testing.md). Visitor-facing behavior is specified in [Product requirements](../product/product-requirements.md).
 
 ## Stack and engineering constraints
 
-- Runtime: Node.js `24.18.0`; package manager: npm `11.16.0`.
+- At scaffold time, use the latest stable Node.js LTS release and latest stable compatible npm release. Record the exact versions in the repository's runtime/package-manager configuration and use those same versions in CI.
 - Use npm and npm scripts. Commit the lockfile and use `npm ci` in CI.
+- For libraries and tooling without a specified version, select the latest stable release compatible with the rest of the stack at scaffold time. Pin resolved dependency versions in `package.json` and `package-lock.json`; CI must use the lockfile.
 - Use the latest stable Angular at scaffold time, with fully standalone components.
 - Use zoneless change detection and `ChangeDetectionStrategy.OnPush` on every component.
 - Use Angular's new control flow (`@if`, `@for`, `@switch`).
@@ -15,14 +16,14 @@ This document defines the application's technical architecture and cross-cutting
 - Use the latest stable Tailwind CSS at scaffold time plus CSS variables for theming.
 - Use Transloco for i18n.
 - Use Vitest for unit/component tests and Playwright for E2E tests; see [Testing](./testing.md).
-- Follow Angular conventions and the architecture diagram at `../images/architektura.png`. The diagram wins for folder structure and layering; this specification wins for behavior.
-- Use oxlint only for linting. Do not install or configure ESLint or Prettier. Add `npm run lint` to run oxlint.
+- Follow Angular conventions and [Project architecture](./architecture.md). The older architecture image at `../images/architektura.png` is only a visual reference and is not an implementation authority.
+- Use Oxlint for linting and Oxfmt for formatting. They are separate Oxc tools: `npm run lint` runs `oxlint`, and `npm run format:check` runs `oxfmt --check`. Do not install or configure ESLint or Prettier.
 - Guard browser-only API calls (`localStorage`, `window`, `document`, `matchMedia`, `IntersectionObserver`) with `isPlatformBrowser` or `afterNextRender`, so SSR/prerender does not break.
 - Do not use `ng new` interactive prompts; pass all flags explicitly for a reproducible scaffold.
 
 ## Architecture and responsibility boundaries
 
-- Keep page sections, shared UI, route configuration, services, pipes, utilities, localization, and styles in the layers shown in the architecture diagram.
+- Keep page sections, shared UI, route configuration, services, pipes, utilities, localization, and styles in the layers defined in [Project architecture](./architecture.md).
 - Keep product facts and visitor-facing requirements in [Product requirements](../product/product-requirements.md); keep technical implementation constraints in this document.
 - Keep uncertain business details as clearly marked placeholders. Do not invent prices, contact details, marketing copy, or other business facts.
 - Prefer simple, maintainable Angular patterns and avoid introducing abstractions without a demonstrated need.
@@ -91,7 +92,7 @@ Rules:
 
 ## GitHub Actions CI/CD
 
-GitHub Actions workflows must use Node.js `24.18.0` and npm `11.16.0`. Use `npm ci`, cache the npm dependency cache, and fail on warnings, errors, or failed assertions relevant to the pipeline.
+GitHub Actions workflows must use the exact Node.js and npm versions recorded in the repository runtime/package-manager configuration. Use `npm ci`, cache the npm dependency cache, and fail on warnings, errors, or failed assertions relevant to the pipeline.
 
 Run gates sequentially: a gate starts only after the previous gate passes, and any failure stops the pipeline.
 
@@ -125,14 +126,14 @@ module.exports = {
 };
 ```
 
-When the application and package manifest are scaffolded, add Commitlint and `@commitlint/config-conventional` as development dependencies and validate commit messages in GitHub Actions. Keep this check within the existing sequential pull-request gates; a failure stops later gates.
+When the application and package manifest are scaffolded, add Commitlint and `@commitlint/config-conventional` as development dependencies. Configure Commitlint as a local Git `commit-msg` hook so it validates each commit message before the commit is created. This is a local commit-time check, not a separate pull-request CI gate.
 
 ### Pull requests
 
 Run these checks sequentially for pull requests targeting the main branch:
 
 1. **Build** — install dependencies and produce a complete Angular SSR/prerender build. Stop on dependency installation, compilation, prerendering, or build failure.
-2. **Lint and format** — run `npm run lint` and the repository's format-check script. Do not install or configure ESLint or Prettier.
+2. **Lint and format** — run `npm run lint` and `npm run format:check` (Oxlint and Oxfmt). Do not install or configure ESLint or Prettier.
 3. **Check translations** — validate that Polish and English have the same Transloco keys. Stop if values are missing or placeholder-key references remain unresolved.
 4. **Unit tests** — run the focused Vitest suite for application behavior.
 5. **E2E tests** — run Playwright for `/pl` and `/en`; fail on a failed user-flow test, console error, or hydration warning.
@@ -151,9 +152,13 @@ Upload build and test artifacts when a gate fails. Do not deploy automatically u
 
 ## SEO
 
+- Planned production canonical origin: `https://www.prostoiczysto.pl`. Domain registration, DNS configuration, and hosting setup remain prerequisites to launch.
+- Use `https://prostoiczysto.pl` as the non-canonical host and redirect it to `https://www.prostoiczysto.pl`. Redirect HTTP requests to HTTPS for both hostnames.
+- Configure a valid TLS certificate covering both `www.prostoiczysto.pl` and `prostoiczysto.pl`; do not launch without working HTTPS on both names, including the apex-to-www redirect.
+- Use the planned canonical origin consistently in canonical URLs, `hreflang`, sitemap, Open Graph metadata, and JSON-LD. Keep the hosting provider and its DNS records unspecified until deployment hosting is selected.
 - Use semantic `header`, `nav`, `main`, `section`, and `footer`; one `h1`; and a logical heading order.
 - Provide per-language title and meta description, Open Graph, and Twitter tags.
-- Provide canonical URLs per language plus `hreflang` (`pl`, `en`, `x-default`) on both pages.
+- Provide canonical URLs per language plus `hreflang` (`pl`, `en`, `x-default`) on both pages, using the planned production origin above.
 - Add `LocalBusiness` JSON-LD with placeholder address/contact details. `FAQPage` from FAQ data is optional; markup must be valid, and FAQ rich results are not guaranteed.
 - Provide `sitemap.xml` for `/pl` and `/en` with alternates, `robots.txt`, and favicon.
 - All section content, including content in any deferred interactive island, must be present in prerendered HTML.
