@@ -12,7 +12,8 @@ The site promotes vinyl record cleaning and flattening. Polish is the primary la
 - [Design and assets](docs/product/design-and-assets.md) — Visual direction and source-image guidance.
 ### Technical documentation
 
-- [Technical architecture](docs/technical/technical-architecture.md) — Stack, architecture, hydration, SEO, accessibility, and tooling.
+- [Technical architecture](docs/technical/technical-architecture.md) — Stack, SSR/hydration, CI/CD, SEO, and accessibility.
+- [Testing](docs/technical/testing.md) — Key unit, component, browser, and hydration acceptance checks.
 
 ### Development agents
 
