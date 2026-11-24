@@ -4,7 +4,7 @@ This document contains the visual direction and source-asset guidance. Product b
 
 ## Primary reference
 
-Use the business card image at `../images/prosto_i_czysto_wizytówka.png` as the primary design reference. Before implementation, inspect it and record findings in `prostoiczysto/docs/design-notes.md`:
+Use the business card image at `../images/prosto_i_czysto_wizytówka.png` as the primary design reference:
 
 - Color palette, with hex values mapped to CSS variables for dark and light themes.
 - Fonts or closest free Google Fonts equivalents.

@@ -10,8 +10,6 @@ The site promotes vinyl record cleaning and flattening. Polish is the primary la
 
 - [Product requirements](docs/product/product-requirements.md) — Business facts, routes, page sections, shared UI kit, and visitor-facing features.
 - [Design and assets](docs/product/design-and-assets.md) — Visual direction and source-image guidance.
-- [Open questions](docs/product/open-questions.md) — Unconfirmed business details that must remain placeholders.
-
 ### Technical documentation
 
 - [Technical architecture](docs/technical/technical-architecture.md) — Stack, architecture, hydration, SEO, accessibility, and tooling.
@@ -24,16 +22,17 @@ The site promotes vinyl record cleaning and flattening. Polish is the primary la
 ## Operating rules
 
 - Use the technical architecture as the implementation authority for the Angular stack, SSR, hydration, SEO, accessibility, and tooling.
+- Pull requests run build, lint/format, translation validation, unit, and E2E checks as sequential gates. Merges to `main` run build, unit, and E2E checks sequentially. Any failed gate stops the pipeline.
 - Make implementation decisions in small, independently verifiable steps.
 - Run relevant build, lint, unit, and browser checks after changes.
-- If something is ambiguous or an asset is missing or unreadable, do not guess silently: before the app is scaffolded, record the assumption in workspace `docs/assumptions.md`; after Phase 1, use `prostoiczysto/docs/assumptions.md`.
+- If something is ambiguous or an asset is missing or unreadable, do not guess silently: preserve the relevant placeholder and record it only in the designated product or technical document.
 - Keep the implementation simple, follow Angular conventions, separate responsibilities appropriately, and prefer maintainable solutions over unnecessary complexity.
 
 ## Precedence
 
 - The architecture diagram at `docs/images/architektura.png` wins for folder structure and layering.
 - The written product and technical requirements win for behavior.
-- If a relevant detail is not confirmed, preserve it as a placeholder and track it in [Open questions](docs/product/open-questions.md).
+- If a relevant detail is not confirmed, preserve it as a placeholder in the relevant product or technical document.
 - Keep each requirement in its designated document and link to it instead of duplicating it elsewhere.
 
 ## Source assets

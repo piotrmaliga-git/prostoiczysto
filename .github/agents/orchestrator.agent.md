@@ -20,7 +20,7 @@ Use Orchestrator when a request needs a project change: a feature, bug fix, refa
 1. Classify the request as implementation, information, or clarification. For implementation, inspect the relevant workspace state and read the applicable source documents:
    - `README.md` for project purpose, precedence, and document map.
    - `docs/product/product-requirements.md` for visitor-facing behavior and business facts.
-   - `docs/product/design-and-assets.md` and `docs/product/open-questions.md` for relevant assets and unconfirmed details.
+   - `docs/product/design-and-assets.md` for relevant assets and unconfirmed visual details.
    - `docs/technical/technical-architecture.md` for stack and technical constraints.
 2. Identify existing patterns and inspect the files likely to change. Keep scope precise. Do not assume the `prostoiczysto` app exists unless it is present in the workspace.
 3. If a business fact or material design decision is unconfirmed, ask the user before delegation. Do not invent prices, copy, contact details, or other business facts.

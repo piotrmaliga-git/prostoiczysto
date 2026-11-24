@@ -24,7 +24,7 @@ This document defines implementation constraints and cross-cutting quality requi
 
 ### Goal
 
-The prerendered HTML for `/pl` and `/en` must be reused by the browser without DOM recreation, flicker, or layout shift. Below-the-fold sections should hydrate lazily to keep initial JavaScript small.
+The prerendered HTML for `/pl` and `/en` must be reused by the browser without DOM recreation, flicker, or layout shift. Use incremental hydration only for components that provide substantial below-the-fold interactivity or downloadable JavaScript; do not defer static sections merely because they appear below the fold.
 
 Read before Phase 1:
 
@@ -42,26 +42,29 @@ Read before Phase 1:
 
 ### Incremental hydration plan
 
-Header, hero, and About are eager. Keep the back-to-top dependency outside deferred sections.
+The landing page is mostly static content. Keep it eager unless a section has a meaningful hydration cost or interactive behavior that justifies deferral.
 
 | Section | Strategy |
 |---|---|
 | Header + hero | Eager; no `@defer` |
 | About | Eager; no `@defer` |
-| Machines | `@defer (hydrate on viewport)` |
-| Gallery + lightbox | `@defer (hydrate on viewport; hydrate on interaction)` |
-| Pricing | `@defer (hydrate on viewport)` |
-| FAQ | `@defer (hydrate on viewport; hydrate on interaction)` |
-| Contact form | `@defer (hydrate on viewport; hydrate on interaction)` |
-| Footer | `@defer (hydrate on viewport)`; `hydrate never` is allowed only if it contains nothing but plain external `<a href>` links |
+| Machines | Eager; no `@defer` |
+| Gallery + lightbox | Eager; if a lightbox is implemented, defer only the optional lightbox overlay and hydrate it on its first user interaction |
+| Pricing | Eager; no `@defer` |
+| FAQ | Eager; native `<details>`/`<summary>` requires no JavaScript |
+| Contact form | Eager; no `@defer` |
+| Footer | Eager; no `@defer` |
 
 Rules:
 
-- Every `@defer` block needs a `@placeholder`, including for client-side navigation. Size it to roughly match the real section.
-- Keep each `<section id="...">` wrapper outside its `@defer` block so navigation targets exist. Keep headings and static copy server-rendered for SEO.
-- Do not use `hydrate when`; it only works for the top-most dehydrated block.
-- Avoid nested `@defer` blocks unless there is a reason. `hydrate never` blocks its whole nested subtree.
-- Nothing outside a deferred section may depend on a component inside it. Navigation, back-to-top, theme, and language switchers stay outside.
+- Keep section and component deferrals minimal. In the initial implementation, use no whole-section deferral.
+- If the optional lightbox is implemented, defer only the lightbox overlay, not the Gallery section or its images.
+- Every `@defer` block needs a minimal `@placeholder`; do not reserve a large layout box for an absent lightbox or modal.
+- Keep every `<section id="...">` wrapper outside a `@defer` block so navigation targets and section content remain server-rendered.
+- Do not use nested `@defer` blocks.
+- Do not use `hydrate when` or `hydrate never` unless a later, documented requirement introduces them.
+- Nothing outside an optional lightbox may depend on it. Navigation, back-to-top, theme, and language switching stay outside.
+- If the Gallery lightbox remains optional and does not require a separate bundle, keep the Gallery and lightbox eager.
 
 ### Hydration-safe coding
 
@@ -83,13 +86,93 @@ Rules:
 - Use a loader that works during prerender. Rely on Angular HTTP transfer cache (included with hydration) so the client does not refetch server-loaded translations.
 - `withI18nSupport()` is only for Angular built-in `i18n` template blocks. This project uses Transloco: do not use `i18n` attributes or add `withI18nSupport()`.
 
+## GitHub Actions CI/CD
+
+GitHub Actions workflows must use the pinned Node.js `24.18.0` and npm `11.16.0` versions. Use `npm ci`, cache the npm dependency cache, and fail on any warning, error, or failed assertion relevant to the pipeline.
+
+### Pull requests
+
+Run these checks sequentially for pull requests targeting the main branch. A failed gate stops the pipeline immediately; the next gate starts only after the previous gate passes:
+
+1. **Build**
+   - Install dependencies and produce a complete Angular SSR/prerender build.
+   - Stop on dependency installation, compilation, prerendering, or build failure.
+
+2. **Lint and format**
+   - Run `npm run lint` and the repository's format-check script.
+   - Stop on lint or formatting failure.
+   - Do not install or configure ESLint or Prettier.
+
+3. **Check translations**
+   - Validate that Polish and English have the same Transloco keys.
+   - Stop if values are missing or placeholder-key references remain unresolved.
+
+4. **Unit tests**
+   - Run the focused Vitest suite for application behavior.
+   - Stop on any failed test or test-run error.
+
+5. **E2E tests**
+   - Start or use the verified build and run Playwright for `/pl` and `/en`.
+   - Stop on a failed user-flow test, console error, or hydration warning.
+
+Run every gate against the same source revision and dependency lockfile. Upload build, test, and Playwright reports when a gate fails.
+
+### Merge to main
+
+For merges to the main branch, run these gates sequentially. A failed gate stops the pipeline immediately:
+
+1. **Build**
+   - Reproduce the production SSR/prerender build.
+   - Stop on any build failure.
+
+2. **Unit tests**
+   - Run the focused Vitest suite.
+   - Stop on any failed test or test-run error.
+
+3. **E2E tests**
+   - Run the Playwright suite against the production build.
+   - Stop on a failed user-flow test, console error, or hydration warning.
+
+Upload build and test artifacts when a gate fails. Do not deploy automatically unless a separate deployment workflow and hosting configuration are added and approved.
+
 ### Hydration verification
 
 - In dev mode, verify hydration stats in the browser console on `/pl` and `/en`.
 - Confirm prerendered HTML contains hydration markers (for example `ngh` attributes).
 - Check for no hydration mismatch and no “Application remains unstable” (NG0506) errors.
-- Use Angular DevTools hydration overlay once to verify deferred sections stay dehydrated until their trigger, then hydrate without visual jumps.
+- Use Angular DevTools hydration overlay once to verify any deferred interactive island stays dehydrated until its trigger, then hydrates without visual jumps.
 - Playwright must fail on console errors or hydration warnings.
+
+### Acceptance tests
+
+Vitest coverage targets are not numerical. Test key behavior and critical regressions instead.
+
+Unit and component tests must cover:
+
+- Polish and English route rendering with the correct page language.
+- Root language resolution using saved preference, browser language, and Polish fallback.
+- Language switching that preserves the current section hash and updates `localStorage` and `<html lang>`.
+- Theme defaults and persisted preferences, including `aria-pressed` and the theme attribute.
+- Header navigation and mobile menu behavior, including link activation and Escape close.
+- Pricing cards, machine cards, external machine links, and placeholder rendering.
+- Gallery image alternatives and optional lightbox keyboard behavior.
+- FAQ native accordion behavior.
+- Contact form required fields, invalid values, loading state, success, and error notifications.
+- Back-to-top visibility and keyboard activation.
+- 404 route localization and return-home navigation.
+
+Browser tests must verify:
+
+- `/pl` and `/en` render the correct content and metadata.
+- `/` redirects according to the saved preference or browser language.
+- Navigation smooth-scroll targets are reachable and section IDs exist.
+- The mobile menu opens, closes, and remains keyboard operable.
+- Theme and language preferences survive reload.
+- The contact form displays validation and submission states without leaving an invalid submitted state behind.
+- Key sections are present in prerendered HTML.
+- The site has no hydration mismatch, console warning, or application stability error.
+- Keyboard focus and visible focus states work for navigation, FAQ, modal/lightbox, and form controls.
+- WCAG AA contrast and reduced-motion behavior are visually checked in dark and light themes.
 
 ## SEO
 
