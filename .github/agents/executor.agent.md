@@ -4,7 +4,7 @@ description: Implement a bounded, approved project task from an Orchestrator han
 model: Claude Sonnet 5.5
 model-policy: required
 target: github-copilot
-tools: ['read', 'search', 'edit', 'execute']
+tools: ["read", "search", "edit", "execute"]
 ---
 
 # Role

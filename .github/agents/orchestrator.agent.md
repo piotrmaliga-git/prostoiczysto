@@ -4,7 +4,7 @@ description: Coordinate end-to-end project implementation requests, gather requi
 model: Claude Opus 5.5
 model-policy: required
 target: github-copilot
-tools: ['read', 'search', 'agent', 'execute']
+tools: ["read", "search", "agent", "execute"]
 ---
 
 # Role
