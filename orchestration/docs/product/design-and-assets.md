@@ -14,10 +14,10 @@ Reuse its visual language across the hero, section headings, cards, and footer. 
 
 ## Image assets
 
-- Use `../images/photo_ex.jpg` (workspace path: `docs/images/photo_ex.jpg`) as the shared temporary photo placeholder for About, Machines, and Gallery until proper photos are available.
+- Use `../images/photo_ex.jpg` (workspace path: `orchestration/docs/images/photo_ex.jpg`) as the shared temporary photo placeholder for About, Machines, and Gallery until proper photos are available.
 - Copy it into the app's public image assets as needed; use responsive sizing and cropping.
 - Do not substitute unrelated stock photos or create replacement photo illustrations. SVG is appropriate for icons and the logo.
-- Source assets are in the workspace `docs/images` folder. Do not use the available machine-specific photos for page sections; use only the shared `photo_ex.jpg` placeholder until final photos are provided.
+- Source assets are in the workspace `orchestration/docs/images` folder. Do not use the available machine-specific photos for page sections; use only the shared `photo_ex.jpg` placeholder until final photos are provided.
 
 ## Visual direction
 

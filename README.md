@@ -1,6 +1,6 @@
 # Prosto i Czysto — project overview
 
-This is the repository-level entry point and source map for the Prosto i Czysto landing-page project. The Angular application belongs in the repository-root `prostoiczysto/` directory; keep project documentation and GitHub configuration at the repository root.
+This is the repository-level entry point and source map for the Prosto i Czysto landing-page project. Project orchestration documentation belongs in `orchestration/docs/`, while the Angular application is generated in the separate repository-root `prostoiczysto/` directory. Keep GitHub configuration at the repository root.
 
 ## Start here
 
@@ -8,13 +8,13 @@ The site promotes vinyl record cleaning and flattening. Polish is the primary la
 
 ### Product and business documentation
 
-- [Product requirements](docs/product/product-requirements.md) — Business facts, routes, page sections, shared UI kit, and visitor-facing features.
-- [Design and assets](docs/product/design-and-assets.md) — Visual direction and source-image guidance.
+- [Product requirements](orchestration/docs/product/product-requirements.md) — Business facts, routes, page sections, shared UI kit, and visitor-facing features.
+- [Design and assets](orchestration/docs/product/design-and-assets.md) — Visual direction and source-image guidance.
 ### Technical documentation
 
-- [Project architecture](docs/technical/architecture.md) — Repository structure, Angular layers, responsibilities, and dependency direction.
-- [Technical requirements](docs/technical/technical-requirements.md) — Stack, SSR/hydration, CI/CD, SEO, and accessibility.
-- [Testing](docs/technical/testing.md) — Key unit, component, browser, and hydration acceptance checks.
+- [Project architecture](orchestration/docs/technical/architecture.md) — Repository structure, Angular layers, responsibilities, and dependency direction.
+- [Technical requirements](orchestration/docs/technical/technical-requirements.md) — Stack, SSR/hydration, CI/CD, SEO, and accessibility.
+- [Testing](orchestration/docs/technical/testing.md) — Key unit, component, browser, and hydration acceptance checks.
 
 ### Development agents
 
@@ -34,16 +34,16 @@ The site promotes vinyl record cleaning and flattening. Polish is the primary la
 
 ## Precedence
 
-- The textual project structure in [Project architecture](docs/technical/architecture.md) wins for folder structure and layering.
+- The textual project structure in [Project architecture](orchestration/docs/technical/architecture.md) wins for folder structure and layering.
 - The written product and technical requirements win for behavior.
 - If a relevant detail is not confirmed, preserve it as a placeholder in the relevant product or technical document.
 - Keep each requirement in its designated document and link to it instead of duplicating it elsewhere.
 
 ## Source assets
 
-Source assets are in `docs/images/`:
+Source assets are in `orchestration/docs/images/`:
 
-- `docs/images/prosto_i_czysto_wizytówka.png` — primary visual reference.
-- `docs/images/photo_ex.jpg` — shared placeholder image for the About, Machines, and Gallery page sections until final photos are available.
+- `orchestration/docs/images/prosto_i_czysto_wizytówka.png` — primary visual reference.
+- `orchestration/docs/images/photo_ex.jpg` — shared placeholder image for the About, Machines, and Gallery page sections until final photos are available.
 
-See [Design and assets](docs/product/design-and-assets.md) for how to use them in the app.
+See [Design and assets](orchestration/docs/product/design-and-assets.md) for how to use them in the app.

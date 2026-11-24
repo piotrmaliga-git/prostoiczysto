@@ -39,10 +39,10 @@ Keep the section order below. It follows the intended landing-page flow: hook, i
    - Language switcher and theme toggle.
    - Primary CTA scrolls to Contact; secondary CTA scrolls to Pricing.
 2. **About**
-   - Use `docs/images/photo_ex.jpg` as the temporary photo placeholder.
+   - Use `orchestration/docs/images/photo_ex.jpg` as the temporary photo placeholder.
    - Include clearly marked Polish and English placeholder copy.
 3. **Machines**
-   - One card per machine, using `docs/images/photo_ex.jpg` as the temporary photo placeholder, with name, translated placeholder description, and product link where available.
+   - One card per machine, using `orchestration/docs/images/photo_ex.jpg` as the temporary photo placeholder, with name, translated placeholder description, and product link where available.
    - Cleaning:
      - HumminGuru NOVA Advanced Ultrasonic Vinyl Record Cleaner: <https://humminguru.com/products/humminguru-nova>
      - HumminGuru Water Dispenser (simplifies refilling water from the tank to the basin); no product URL supplied, so use a clearly marked placeholder constant.
@@ -52,7 +52,7 @@ Keep the section order below. It follows the intended landing-page flow: hook, i
    - External links use `target="_blank"` and `rel="noopener noreferrer"`. Render no link when a card has no URL.
    - Add Machines to navigation, translations, and JSON-LD/sitemap where relevant.
 4. **Gallery**
-   - Use responsive images sourced from `docs/images/photo_ex.jpg` as temporary photo placeholders; do not create substitute photo illustrations.
+   - Use responsive images sourced from `orchestration/docs/images/photo_ex.jpg` as temporary photo placeholders; do not create substitute photo illustrations.
    - Use responsive images, lazy loading, and meaningful translated alt text.
    - An optional lightbox may use the shared Modal and must support Escape, arrow-key navigation, focus trapping, and focus return to the trigger.
    - Gallery intentionally precedes Pricing: show results first, then price.

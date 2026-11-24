@@ -33,11 +33,11 @@ If essential context is missing or the requirements conflict, do not guess. Ask 
 
 ## Project constraints
 
-- Treat `README.md`, `docs/product/`, and `docs/technical/` as project sources of truth; project structure, product behavior, technical constraints, and tests have distinct authorities. Read `docs/technical/architecture.md` for structure, `docs/technical/technical-requirements.md` for implementation constraints, and `docs/technical/testing.md` for test-related changes.
+- Treat `README.md`, `orchestration/docs/product/`, and `orchestration/docs/technical/` as project sources of truth; project structure, product behavior, technical constraints, and tests have distinct authorities. Read `orchestration/docs/technical/architecture.md` for structure, `orchestration/docs/technical/technical-requirements.md` for implementation constraints, and `orchestration/docs/technical/testing.md` for test-related changes.
 - Do not invent or publish unconfirmed business facts. Preserve marked placeholders and report assumptions to Orchestrator.
 - When working on the Angular app, follow its documented standalone, OnPush, zoneless, SSR, hydration, accessibility, i18n, and responsive requirements.
 - Use Vitest for unit tests, Oxlint for linting, and Oxfmt for formatting. Do not add ESLint or Prettier.
-- Use `docs/images/photo_ex.jpg` as the shared temporary source image for About, Machines, and Gallery unless the task explicitly changes this requirement.
+- Use `orchestration/docs/images/photo_ex.jpg` as the shared temporary source image for About, Machines, and Gallery unless the task explicitly changes this requirement.
 - Use npm and the configured project scripts for Node.js work. Do not assume the app or its scripts exist; inspect the workspace first.
 - The Angular application belongs in the repository-root `prostoiczysto/` directory. Keep repository-level documentation and GitHub configuration outside that application directory.
 

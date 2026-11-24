@@ -6,7 +6,7 @@ Technical implementation constraints and runtime behavior are specified in [Tech
 
 ## Textual project structure
 
-The repository root contains project documentation and GitHub configuration. The Angular application is scaffolded in the repository-root `prostoiczysto/` directory. All application paths described below are relative to that directory unless explicitly prefixed with `.github/` or `docs/`. Do not create a second nested `prostoiczysto/` directory.
+The repository root contains orchestration documentation and GitHub configuration. The Angular application is scaffolded in the separate repository-root `prostoiczysto/` directory. All application paths described below are relative to that directory unless explicitly prefixed with `.github/` or `orchestration/docs/`. Do not create a second nested `prostoiczysto/` directory.
 
 ```text
 repository-root/
@@ -16,15 +16,16 @@ repository-root/
 │   │   └── executor.agent.md
 │   ├── workflows/
 │   └── PULL_REQUEST_TEMPLATE.md
-├── docs/
-│   ├── product/
-│   │   ├── product-requirements.md
-│   │   └── design-and-assets.md
-│   ├── technical/
-│   │   ├── architecture.md
-│   │   ├── technical-requirements.md
-│   │   └── testing.md
-│   └── images/
+├── orchestration/
+│   └── docs/
+│       ├── product/
+│       │   ├── product-requirements.md
+│       │   └── design-and-assets.md
+│       ├── technical/
+│       │   ├── architecture.md
+│       │   ├── technical-requirements.md
+│       │   └── testing.md
+│       └── images/
 ├── README.md
 └── prostoiczysto/
     ├── e2e/
@@ -111,7 +112,7 @@ The exact scaffold may place SSR and server configuration files in additional An
 ### `src/assets/`
 
 - Contains bundled application assets such as responsive copies of placeholder images and local font files.
-- Source assets remain in `docs/images/` and must not be edited in place as an implementation step.
+- Source assets remain in `orchestration/docs/images/` and must not be edited in place as an implementation step.
 
 ### `src/assets/i18n/`
 
