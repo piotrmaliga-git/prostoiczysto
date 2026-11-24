@@ -33,7 +33,7 @@ If essential context is missing or the requirements conflict, do not guess. Ask 
 
 ## Project constraints
 
-- Treat `README.md`, `docs/product/`, and `docs/technical/technical-architecture.md` as project sources of truth; product behavior and technical constraints have distinct authorities.
+- Treat `README.md`, `docs/product/`, and `docs/technical/` as project sources of truth; product behavior and technical constraints have distinct authorities. Read `docs/technical/testing.md` for test-related changes.
 - Do not invent or publish unconfirmed business facts. Preserve marked placeholders and report assumptions to Orchestrator.
 - When working on the Angular app, follow its documented standalone, OnPush, zoneless, SSR, hydration, accessibility, i18n, and responsive requirements.
 - Use Vitest for unit tests and oxlint for linting. Do not add ESLint or Prettier.
