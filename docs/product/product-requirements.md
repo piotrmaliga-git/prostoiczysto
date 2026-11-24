@@ -7,6 +7,9 @@ This document defines what the Prosto i Czysto landing page must contain and how
 - Business: vinyl record cleaning and flattening warped records.
 - Brand: **Prosto i Czysto**.
 - Primary audience and language: Polish; English is the second language.
+- During implementation, developer-facing source text and technical identifiers must remain in English.
+- Author and maintain `en.json` first. Polish copy must be added in `pl.json` as an explicit translation of the same English keys.
+- Do not ship untranslated English customer-facing copy on `/pl`, or untranslated Polish customer-facing copy on `/en`.
 - Use clearly marked Lorem ipsum-style placeholders in Polish and English for all customer-facing marketing copy, including hero and section text, descriptions, and FAQ questions and answers. Do not invent final marketing wording.
 - Keep supplied facts accurate, including business and machine names, prices, and form requirements. Functional UI labels and accessibility text must be clear and translated.
 
@@ -15,8 +18,12 @@ This document defines what the Prosto i Czysto landing page must contain and how
 - `/pl` and `/en`: the full landing page, prerendered as static HTML for each language.
 - `/`: client-side language selection in this order:
   1. Language saved in `localStorage`.
-  2. Browser language (`navigator.language`) if Polish or English.
+  2. Browser/device language (`navigator.language`) if it indicates Polish or English.
   3. Polish otherwise.
+- Polish device languages such as `pl` or `pl-PL` open `/pl`.
+- English device languages such as `en` or `en-US` open `/en`.
+- All other browser/device languages open `/pl` by default.
+- Direct `/pl` and `/en` URLs always take precedence over the saved preference and device language.
 - The prerendered root page cannot detect browser language. Include a lightweight client redirect, a `<noscript>` link, and a `<meta http-equiv="refresh">` fallback to `/pl`.
 - `**`: lazy-loaded, styled 404 page with a link back home. Localize it when the URL starts with `/pl` or `/en`; otherwise use Polish.
 - Language switching navigates between `/pl` and `/en`, preserves the current hash/section, and saves the choice.

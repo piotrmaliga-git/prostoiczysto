@@ -88,6 +88,9 @@ Rules:
 
 - Load Transloco translations before first render on both server and client so prerendered text matches and translation keys do not flash.
 - Use a loader that works during prerender. Rely on Angular HTTP transfer cache so the client does not refetch server-loaded translations.
+- Developer implementation and source code must use English. Add the English version to `src/assets/i18n/en.json` first, then translate the identical key path into `src/assets/i18n/pl.json`.
+- A direct `/pl` or `/en` route is authoritative. The root `/` route may read the saved preference and `navigator.language` only after confirming browser APIs are available.
+- Match Polish device locale values by primary language code (`pl`) and English values by primary language code (`en`). Unknown, unsupported, or missing browser locale values fall back to Polish.
 - `withI18nSupport()` is only for Angular built-in `i18n` template blocks. This project uses Transloco: do not use `i18n` attributes or add `withI18nSupport()`.
 
 ## GitHub Actions CI/CD

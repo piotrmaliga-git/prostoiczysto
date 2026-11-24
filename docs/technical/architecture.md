@@ -118,6 +118,10 @@ The exact scaffold may place SSR and server configuration files in additional An
 - Contains the Transloco JSON dictionaries:
   - `pl.json` for Polish.
   - `en.json` for English.
+- Keep source code, component names, service names, developer comments, technical identifiers, and test descriptions in English.
+- Add new customer-facing copy to `en.json` first, with a stable English key path.
+- Add the Polish translation under the identical key path in `pl.json`; do not invent or duplicate a separate key structure.
+- `en.json` is the implementation source for new copy. `pl.json` is its translated Polish counterpart.
 - Polish and English must have the same translation keys.
 - The loader must support server-side loading during prerender and client-side loading after hydration.
 

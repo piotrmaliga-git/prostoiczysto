@@ -8,6 +8,8 @@ Cover these behaviors:
 
 - Polish and English route rendering with the correct page language.
 - Root language resolution using saved preference, browser language, and Polish fallback.
+- Root language resolution for `pl`, `pl-PL`, `en`, `en-US`, and unsupported browser locales.
+- Direct `/pl` and `/en` rendering without redirecting to a saved or device-selected language.
 - Language switching that preserves the current section hash and updates `localStorage` and `<html lang>`.
 - Theme defaults and persisted preferences, including `aria-pressed` and the theme attribute.
 - Header navigation and mobile menu behavior, including link activation and Escape close.
