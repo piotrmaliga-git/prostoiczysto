@@ -44,10 +44,13 @@ repository-root/
     │   │   ├── service/
     │   │   ├── pipes/
     │   │   └── utils/
+    │   │       └── translations/
     │   ├── assets/
-    │   │   └── i18n/
-    │   │       ├── pl.json
-    │   │       └── en.json
+    │   │   ├── images/
+    │   │   └── fonts/
+    │   ├── locale/
+    │   │   ├── messages.xlf
+    │   │   └── messages.pl.xlf
     │   ├── environments/
     │   │   ├── environment.ts
     │   │   └── environment.development.ts
@@ -98,7 +101,7 @@ The exact scaffold may place SSR and server configuration files in additional An
 ### `src/app/service/`
 
 - Contains injectable application services.
-- Intended responsibilities include notifications, theme, language, SEO/metadata, and contact submission.
+- Intended responsibilities include notifications, theme, SEO/metadata, and contact submission. Locale is selected by the localized build and URL; do not add a service that swaps translation catalogs at runtime.
 - Services must not contain standalone page markup or product copy.
 
 ### `src/app/pipes/`
@@ -114,17 +117,14 @@ The exact scaffold may place SSR and server configuration files in additional An
 - Contains bundled application assets such as responsive copies of placeholder images and local font files.
 - Source assets remain in `orchestration/docs/images/` and must not be edited in place as an implementation step.
 
-### `src/assets/i18n/`
+### `src/locale/`
 
-- Contains the Transloco JSON dictionaries:
-  - `pl.json` for Polish.
-  - `en.json` for English.
+- Contains the catalogs for Angular's built-in i18n.
+- English is the source locale. Extract marked template messages and `$localize` strings into `messages.xlf`; maintain Polish translations in `messages.pl.xlf`.
 - Keep source code, component names, service names, developer comments, technical identifiers, and test descriptions in English.
-- Add new customer-facing copy to `en.json` first, with a stable English key path.
-- Add the Polish translation under the identical key path in `pl.json`; do not invent or duplicate a separate key structure.
-- `en.json` is the implementation source for new copy. `pl.json` is its translated Polish counterpart.
-- Polish and English must have the same translation keys.
-- The loader must support server-side loading during prerender and client-side loading after hydration.
+- Configure Angular's localized builds to emit the English source locale at `/en` and the Polish translation at `/pl`.
+- Validate the Polish XLIFF catalog against the extracted English messages; do not maintain a parallel JSON dictionary or duplicate translated copy in TypeScript constants.
+- Compile locale-specific messages into each output so server rendering and hydration use the same locale without a runtime translation loader.
 
 ### `src/environments/`
 
@@ -153,9 +153,8 @@ The exact scaffold may place SSR and server configuration files in additional An
 - Shared UI must not import from pages or feature components.
 - Services must not import shared UI or page components unless a service is explicitly browser-behavior-specific and otherwise remains decoupled.
 - Pipes and utilities must remain independent of page and component state.
-- Product facts, machine constants, FAQ translation keys, and marketing placeholders live in constants or localization files.
-- Product facts, machine constants, FAQ translation keys, and marketing placeholders must not be duplicated across components.
-- Transloco translation dictionaries in `src/assets/i18n/` must not contain environment secrets or deployment configuration.
+- Keep nonlocalized product facts and machine data in one constants/data source. Mark visitor-facing copy with Angular i18n in templates or `$localize` in TypeScript, and do not duplicate it across components.
+- XLIFF translation catalogs contain public translated messages only; never put environment secrets or deployment configuration in them.
 
 ## Application state and configuration
 
@@ -164,4 +163,4 @@ The exact scaffold may place SSR and server configuration files in additional An
 - Root `/` language resolution may read `localStorage` and `navigator.language`, but SSR and prerender must not assume those browser APIs exist.
 - The language switch and theme toggle are the only visitor preferences that require persistence; both must have safe fallbacks.
 - The Formspree endpoint belongs in environment configuration and is never hard-coded in a component.
-- Machine names, URLs, image paths, FAQ keys, and placeholder copy must be maintained in constants or localization files rather than inline component markup.
+- Machine names, URLs, and image paths must be maintained in one data/constants source rather than duplicated in component markup. Localized copy belongs in Angular i18n messages.

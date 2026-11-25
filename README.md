@@ -30,7 +30,7 @@ The site promotes vinyl record cleaning and flattening. Polish is the primary la
 - Run relevant build, lint, unit, and browser checks after changes.
 - If something is ambiguous or an asset is missing or unreadable, do not guess silently: preserve the relevant placeholder and record it only in the designated product or technical document.
 - Keep the implementation simple, follow Angular conventions, separate responsibilities appropriately, and prefer maintainable solutions over unnecessary complexity.
-- Keep source code and developer-facing identifiers in English. Add customer-facing copy to `prostoiczysto/src/assets/i18n/en.json` first and translate it into `prostoiczysto/src/assets/i18n/pl.json` under the same keys.
+- Keep source code and developer-facing identifiers in English. English is the Angular i18n source locale: mark template copy with Angular's built-in i18n and TypeScript strings with `$localize`, then maintain the extracted Polish XLIFF translations in `prostoiczysto/src/locale/`.
 - Direct `/pl` and `/en` routes determine the displayed language. On `/`, match Polish or English device browser languages and fall back to Polish for unsupported locales.
 
 ## Precedence
