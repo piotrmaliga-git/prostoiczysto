@@ -17,7 +17,7 @@ Unless stated otherwise, application paths in this document are relative to the 
 - Angular hydration is required. Use incremental hydration selectively, as described below.
 - Use lazy-loaded routes.
 - Use the latest stable Tailwind CSS at scaffold time plus CSS variables for theming.
-- Use Transloco for i18n.
+- Use Angular's built-in compile-time i18n with `@angular/localize`. Do not add Transloco or another runtime translation library.
 - Use Vitest for unit/component tests and Playwright for E2E tests; see [Testing](./testing.md).
 - Follow Angular conventions and [Project architecture](./architecture.md). Run application commands from the repository-root `prostoiczysto/` directory.
 - Use Oxlint for linting and Oxfmt for formatting. They are separate Oxc tools: `npm run lint` runs `oxlint`, and `npm run format:check` runs `oxfmt --check`. Do not install or configure ESLint or Prettier.
@@ -30,6 +30,7 @@ Unless stated otherwise, application paths in this document are relative to the 
 - Keep product facts and visitor-facing requirements in [Product requirements](../product/product-requirements.md); keep technical implementation constraints in this document.
 - Keep uncertain business details as clearly marked placeholders. Do not invent prices, contact details, marketing copy, or other business facts.
 - Prefer simple, maintainable Angular patterns and avoid introducing abstractions without a demonstrated need.
+- Put shared constants, enums, interfaces, translation helpers, and type aliases in focused files under the matching `src/app/utils/` category folders. Do not define reusable declarations or translation cases inside component or service implementation files. Keep feature-specific declarations in separate files within their feature area.
 
 ## SSR and hydration
 
@@ -89,12 +90,15 @@ Rules:
 
 ### Internationalization and hydration
 
-- Load Transloco translations before first render on both server and client so prerendered text matches and translation keys do not flash.
-- Use a loader that works during prerender. Rely on Angular HTTP transfer cache so the client does not refetch server-loaded translations.
-- Developer implementation and source code must use English. Add the English version to `src/assets/i18n/en.json` first, then translate the identical key path into `src/assets/i18n/pl.json`.
+- Use English as the Angular source locale. Mark static template messages with Angular's built-in `i18n` attributes/blocks. When TypeScript must produce localized text, keep `$localize` messages and any translation-selection logic in pure helpers under `src/app/utils/translations/`, not in component logic; components should consume those helpers.
+- Extract English source messages to `src/locale/messages.xlf` and maintain Polish translations in `src/locale/messages.pl.xlf`.
+- Configure Angular localized builds so the English source locale is emitted at `/en` and the Polish translation at `/pl`. Prerender both outputs and verify the paths and SSR behavior against the selected Angular CLI version.
+- Language switching performs a full-document navigation to the other localized output; do not try to change the compiled locale in-place. Preserve the current hash and the saved language preference as specified in Product requirements.
+- Set the correct `<html lang>` value in each localized output. The URL determines the locale, so server rendering and hydration use the same translated messages.
+- Fail the build or translation-validation gate when a Polish message is missing or duplicated; keep the XLIFF catalog synchronized with extracted source messages.
 - A direct `/pl` or `/en` route is authoritative. The root `/` route may read the saved preference and `navigator.language` only after confirming browser APIs are available.
 - Match Polish device locale values by primary language code (`pl`) and English values by primary language code (`en`). Unknown, unsupported, or missing browser locale values fall back to Polish.
-- `withI18nSupport()` is only for Angular built-in `i18n` template blocks. This project uses Transloco: do not use `i18n` attributes or add `withI18nSupport()`.
+- Enable Angular's `withI18nSupport()` alongside hydration for built-in i18n template blocks. Do not add a parallel runtime translation system.
 
 ## GitHub Actions CI/CD
 
@@ -140,7 +144,7 @@ Run these checks sequentially for pull requests targeting the main branch:
 
 1. **Build** — install dependencies and produce a complete Angular SSR/prerender build. Stop on dependency installation, compilation, prerendering, or build failure.
 2. **Lint and format** — run `npm run lint` and `npm run format:check` (Oxlint and Oxfmt). Do not install or configure ESLint or Prettier.
-3. **Check translations** — validate that Polish and English have the same Transloco keys. Stop if values are missing or placeholder-key references remain unresolved.
+3. **Check translations** — validate the Polish XLIFF catalog against the extracted English source messages. Stop on missing or duplicate translations, or unresolved placeholder messages.
 4. **Unit tests** — run the focused Vitest suite for application behavior.
 5. **E2E tests** — run Playwright for `/pl` and `/en`; fail on a failed user-flow test, console error, or hydration warning.
 

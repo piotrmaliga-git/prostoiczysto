@@ -10,7 +10,7 @@ Cover these behaviors:
 - Root language resolution using saved preference, browser language, and Polish fallback.
 - Root language resolution for `pl`, `pl-PL`, `en`, `en-US`, and unsupported browser locales.
 - Direct `/pl` and `/en` rendering without redirecting to a saved or device-selected language.
-- Language switching that preserves the current section hash and updates `localStorage` and `<html lang>`.
+- Language switching that performs a full-document navigation to the other localized output, preserves the current section hash, and updates `localStorage`; verify the destination document has the correct `<html lang>`.
 - Theme defaults and persisted preferences, including `aria-pressed` and the theme attribute.
 - Header navigation and mobile menu behavior, including link activation and Escape close.
 - Pricing cards, machine cards, external machine links, and placeholder rendering.
@@ -48,6 +48,8 @@ Verify:
 
 - `/pl` and `/en` render the correct content and metadata.
 - `/` redirects according to the saved preference or browser language.
+- The English source locale and Polish XLIFF translation are both built and prerendered at `/en` and `/pl`, with the correct translated content and `<html lang>`.
+- Switching language performs a full-document navigation to the other locale while preserving the current section hash and saved preference.
 - Navigation smooth-scroll targets are reachable and section IDs exist.
 - The mobile menu opens, closes, and remains keyboard operable.
 - Theme and language preferences survive reload.

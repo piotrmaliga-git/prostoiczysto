@@ -8,7 +8,7 @@ This document defines what the Prosto i Czysto landing page must contain and how
 - Brand: **Prosto i Czysto**.
 - Primary audience and language: Polish; English is the second language.
 - During implementation, developer-facing source text and technical identifiers must remain in English.
-- Author and maintain `en.json` first. Polish copy must be added in `pl.json` as an explicit translation of the same English keys.
+- Use English as the source locale for Angular's built-in i18n. Mark customer-facing template text for extraction and use `$localize` for localized TypeScript strings; provide Polish translations in the XLIFF catalog.
 - Do not ship untranslated English customer-facing copy on `/pl`, or untranslated Polish customer-facing copy on `/en`.
 - Use clearly marked Lorem ipsum-style placeholders in Polish and English for all customer-facing marketing copy, including hero and section text, descriptions, and FAQ questions and answers. Do not invent final marketing wording.
 - Keep supplied facts accurate, including business and machine names, prices, and form requirements. Functional UI labels and accessibility text must be clear and translated.
@@ -24,9 +24,9 @@ This document defines what the Prosto i Czysto landing page must contain and how
 - English device languages such as `en` or `en-US` open `/en`.
 - All other browser/device languages open `/pl` by default.
 - Direct `/pl` and `/en` URLs always take precedence over the saved preference and device language.
-- The prerendered root page cannot detect browser language. Include a lightweight client redirect, a `<noscript>` link, and a `<meta http-equiv="refresh">` fallback to `/pl`.
+- The prerendered root page cannot detect browser language. Include a lightweight client redirect and a `<noscript>` link to `/pl`; do not use an unconditional meta refresh that could override language selection.
 - `**`: lazy-loaded, styled 404 page with a link back home. Localize it when the URL starts with `/pl` or `/en`; otherwise use Polish.
-- Language switching navigates between `/pl` and `/en`, preserves the current hash/section, and saves the choice.
+- Language switching performs a full-document navigation between the separately localized `/pl` and `/en` outputs, preserves the current hash/section, and saves the choice. Do not switch translations in-place inside the running app.
 - Header navigation order: About, Machines, Gallery, Pricing, FAQ, Contact.
 
 ## Page sections
@@ -65,7 +65,7 @@ Keep the section order below. It follows the intended landing-page flow: hook, i
 6. **FAQ**
    - Accessible accordion with six clearly marked placeholder question/answer pairs in both languages. Cover service time, eligible records, suitable warps, handover or shipping, larger-batch discounts, and risks or guarantees.
    - Use the shared Accordion built on native `<details>`/`<summary>`. Only one open item at a time is optional.
-   - Keep FAQ translation keys in one constants file; adding a question means adding one key pair per language.
+   - Mark each FAQ question and answer for Angular i18n extraction and translate it in the Polish XLIFF catalog. Do not duplicate translated text or translation keys in a TypeScript constants file.
    - Add FAQ to navigation and translations; an `FAQPage` JSON-LD block is optional.
 7. **Contact**
    - Form fields: name, email, message.
@@ -92,11 +92,11 @@ All kit components must follow the hydration-safe rules in [Technical requiremen
 
 ### Internationalization
 
-- Polish and English runtime switcher.
+- Use Angular's built-in compile-time i18n, with English as the source locale and Polish as a translated locale. Do not add a runtime translation library.
+- Build and prerender separate localized outputs at `/en` and `/pl`; the language switcher navigates to the other output with a full document load.
 - Language is determined by the URL (`/pl`, `/en`); `/` chooses automatically as specified above.
 - Save the selected language in `localStorage`.
-- Update `<html lang>` on language switch and navigation.
-- Provide placeholder copy in both languages.
+- Ensure each localized output has the correct `<html lang>` value and translated placeholder copy.
 
 ### Theme
 
