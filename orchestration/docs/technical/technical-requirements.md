@@ -10,7 +10,8 @@ Unless stated otherwise, application paths in this document are relative to the 
 - Use npm and npm scripts. Commit the lockfile and use `npm ci` in CI.
 - For libraries and tooling without a specified version, select the latest stable release compatible with the rest of the stack at scaffold time. Pin resolved dependency versions in `package.json` and `package-lock.json`; CI must use the lockfile.
 - Use the latest stable Angular at scaffold time, with fully standalone components.
-- Use zoneless change detection and `ChangeDetectionStrategy.OnPush` on every component.
+- Build a genuinely zoneless app: do not rely on Zone.js-based change detection, and use the zoneless setup supported by the pinned Angular version. Use `ChangeDetectionStrategy.OnPush` on every component.
+- Use Angular Signals as the default model for application and UI state: use `signal` for writable state and `computed` for derived state. Keep `effect` for necessary imperative side effects. This is signals-first, not signals-only: use RxJS where stream-based APIs or asynchronous flows fit better, and use Angular's supported interop APIs when signals and observables need to work together.
 - Use Angular's new control flow (`@if`, `@for`, `@switch`).
 - Use Angular SSR with prerendering of `/pl` and `/en`.
 - Angular hydration is required. Use incremental hydration selectively, as described below.
