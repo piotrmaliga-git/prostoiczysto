@@ -44,7 +44,11 @@ repository-root/
     │   │   ├── service/
     │   │   ├── pipes/
     │   │   └── utils/
-    │   │       └── translations/
+    │   │       ├── constants/
+    │   │       ├── enums/
+    │   │       ├── interfaces/
+    │   │       ├── translations/
+    │   │       └── types/
     │   ├── assets/
     │   │   ├── images/
     │   │   └── fonts/
@@ -110,7 +114,21 @@ The exact scaffold may place SSR and server configuration files in additional An
 
 ### `src/app/utils/`
 
-- Contains framework-independent functions and constants that have no DOM or injectable-service dependency.
+- Contains shared, framework-independent utilities with no DOM or injectable-service dependency. Organize shared code into focused category folders:
+  - `constants/` for reusable constant values.
+  - `enums/` for runtime enum declarations.
+  - `interfaces/` for shared object contracts.
+  - `translations/` for code-based localization helpers and messages.
+  - `types/` for type aliases, unions, and other shared type declarations.
+- Keep each concern in a descriptive, dedicated file. Do not put reusable declarations or translation cases in component or service implementation files.
+- Use these folders for shared concerns; keep feature-specific declarations in separate files within their feature area rather than turning `utils/` into a catch-all.
+
+### `src/app/utils/translations/`
+
+- Contains pure translation helpers, localized constants, and locale-specific mappings needed by TypeScript code.
+- Keep `$localize` messages and translation-selection logic out of component logic; components should consume helpers from this folder when they need code-generated localized text.
+- Keep helpers free of component state, DOM access, and injectable services.
+- Static template copy stays in templates marked with Angular `i18n`; do not move it into utilities just to translate it.
 
 ### `src/assets/`
 

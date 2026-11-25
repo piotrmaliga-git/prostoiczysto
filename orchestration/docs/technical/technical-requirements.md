@@ -30,6 +30,7 @@ Unless stated otherwise, application paths in this document are relative to the 
 - Keep product facts and visitor-facing requirements in [Product requirements](../product/product-requirements.md); keep technical implementation constraints in this document.
 - Keep uncertain business details as clearly marked placeholders. Do not invent prices, contact details, marketing copy, or other business facts.
 - Prefer simple, maintainable Angular patterns and avoid introducing abstractions without a demonstrated need.
+- Put shared constants, enums, interfaces, translation helpers, and type aliases in focused files under the matching `src/app/utils/` category folders. Do not define reusable declarations or translation cases inside component or service implementation files. Keep feature-specific declarations in separate files within their feature area.
 
 ## SSR and hydration
 
