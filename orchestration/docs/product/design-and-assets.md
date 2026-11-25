@@ -2,15 +2,14 @@
 
 This document contains the visual direction and source-asset guidance. Product behavior is specified in [Product requirements](./product-requirements.md).
 
-## Primary reference
+## Design references
 
-Use the business card image at `../images/prosto_i_czysto_wizytówka.png` as the primary design reference:
+Use the business card image at `../images/prosto_i_czysto_wizytówka.png` as the source of truth for the brand identity:
 
-- Color palette, with hex values mapped to CSS variables for dark and light themes.
-- Fonts or closest free Google Fonts equivalents.
-- Logo/brand mark treatment, layout patterns, shapes, spacing, and tone.
+- Take the website's brand colors from the card and map them to CSS variables for dark and light themes. Do not take colors from inspiration websites.
+- Reuse or recreate the logo/brand mark as SVG if possible.
 
-Reuse its visual language across the hero, section headings, cards, and footer. Reuse or recreate the logo as SVG if possible.
+Use the websites and concepts in [Secondary inspiration](#secondary-inspiration) as references for what makes an effective website: layout and section composition, shapes, spacing, interaction patterns, and user experience. Adapt useful ideas to this project rather than copying a reference site. Their color palettes and branding are not references for this project.
 
 ## Image assets
 
@@ -21,15 +20,14 @@ Reuse its visual language across the hero, section headings, cards, and footer. 
 
 ## Visual direction
 
-If the business card conflicts with the following notes, the business card wins.
+Apply the business-card palette consistently across both themes, maintaining accessible contrast. Do not assume a dark, moody palette or prescribe colors independently of the card.
 
-- Dark, moody base with warm cream text and one accent color.
 - Vinyl motifs: record grooves, a slowly rotating record in the hero (CSS animation), and subtle label-like circular elements.
-- Bold editorial typography (strong display font plus clean sans body), generous spacing, and large imagery.
+- Consider bold editorial typography (strong display font plus clean sans body), generous spacing, and large imagery where it fits the brand and page structure.
 - Subtle, smooth scroll-triggered reveals, restrained hover and menu transitions.
 - Keep motion polished but not distracting; avoid effects that harm performance or cause layout shifts.
 - Reduce or disable nonessential motion under `prefers-reduced-motion`.
-- Light theme should feel like warm paper/cream, not simply an inversion of dark.
+- Design both themes deliberately; the light theme should not be a simple inversion of the dark theme.
 
 ## Secondary inspiration
 

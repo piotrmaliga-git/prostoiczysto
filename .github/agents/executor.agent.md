@@ -21,6 +21,7 @@ Before editing, confirm the handoff identifies:
 - Checks to run and any confirmed decisions or assumptions.
 
 If essential context is missing or the requirements conflict, do not guess. Ask Orchestrator for the missing information. Do not rely on access to another agent's conversation or unstated context.
+During exploration and planning owned by Orchestrator, Executor should not ask the user directly. If, during implementation, a requirement or technical detail needs verification, report the exact uncertainty and relevant evidence to Orchestrator and request a verified resolution; do not guess or ask the user directly. Orchestrator will investigate project sources and existing patterns, and will consult the user only if an essential material decision remains. Pause only the affected work while awaiting resolution, and continue independent work that is clearly within the approved scope. Resume the affected work using Orchestrator's verified guidance.
 
 ## Execution
 
