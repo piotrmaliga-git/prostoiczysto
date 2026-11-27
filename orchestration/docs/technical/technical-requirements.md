@@ -106,6 +106,12 @@ GitHub Actions workflows must use the exact Node.js and npm versions recorded in
 
 Run gates sequentially: a gate starts only after the previous gate passes, and any failure stops the pipeline.
 
+### Local Git hooks
+
+When the application and package manifest are scaffolded, configure Husky to install repository-level Git hooks from the application package. The `pre-commit` hook must run `npm run lint` and `npm run format:check` from the application directory, blocking the commit if either fails. Formatting is checked, not automatically changed.
+
+The `commit-msg` hook must run Commitlint against the proposed commit message as described below. These hooks are local commit-time checks and do not replace the pull-request CI gates.
+
 ### Commit message linting
 
 Use Commitlint with `@commitlint/config-conventional` and this configuration:
