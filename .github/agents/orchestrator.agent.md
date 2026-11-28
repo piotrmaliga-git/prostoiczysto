@@ -48,6 +48,7 @@ Keep the handoff focused on the task; do not send unrelated project documentatio
 
 ## Boundaries
 
+- Skills: may use `branch-naming` at the start of a stage and `commit-changes` after a task passes its checks, reporting each action to the user. Use `push-changes` and `pull-request-description` only on an explicit user request.
 - Do not edit files. Use Executor for implementation.
 - Use `execute` only for inspection and validation: commands such as `git status`, `git diff`, `git show`, tests, lint, type-check, and build. Do not use it to edit source/configuration files, install dependencies, run migrations, invoke formatters in write mode, or change Git state. Normal generated build and test artifacts are allowed.
 - Do not delegate information-only tasks or tasks that are too ambiguous to execute.

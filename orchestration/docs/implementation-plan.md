@@ -8,7 +8,7 @@ This roadmap divides implementation into validated stages. The [product requirem
 - Complete each stage's gate before starting dependent work. Report the exact checks and results, unresolved placeholders, and blockers; do not mark a gate passed if a check was skipped or failed.
 - Update the relevant status as work progresses. A stage may be split into smaller tasks, each with focused validation.
 - Keep unconfirmed business details as marked placeholders. Do not copy reference-site branding or invent customer-facing facts.
-- Commits and pushes require a separate user request.
+- Commits are made with `commit-changes` only after a task passes its checks; pushes and pull requests require a separate user request.
 - Follow the task breakdown, handoff template, and gate evidence rules below.
 
 ## Status
@@ -61,6 +61,7 @@ Quality gate (QG) = `npm run build`, `npm run lint`, `npm run format:check`, `np
 2. **Tooling:** Oxlint, Oxfmt, Tailwind and scripts. Check lint and format; record what Oxlint/Oxfmt cover in Angular templates (`@if`, `@for`, `i18n`). Do not add ESLint or Prettier.
 3. **Test runners:** Vitest smoke test, Playwright config and smoke test. Spike Stryker (see [Testing](technical/testing.md#mutation-testing)) and record the command or its limits.
 4. **Hooks:** Husky pre-commit and commit-msg configured at the Git root (`.husky/` and `prepare` script in the root `package.json`). Prove on a temporary branch that a lint error is rejected, a non-conventional message is rejected, and a valid commit passes.
+5. **CI skeleton:** `.github/workflows/` pull-request workflow running from the repository root (`npm ci`, `cache-dependency-path: package-lock.json`) with build, lint, format check and unit tests as sequential gates. Each later stage adds its gate (`i18n:check` in Stage 2, `a11y` in Stage 3, E2E with the first E2E test, mutation in Stage 5); Stage 6 finalizes the full documented pipeline and Lighthouse. No deployment step.
 
 ### Stage 2 tasks
 
@@ -84,18 +85,18 @@ Quality gate (QG) = `npm run build`, `npm run lint`, `npm run format:check`, `np
 - **4C Gallery and Pricing:** responsive lazy images with translated alt text; 5 zł and 30 zł; two pricing cards only, no combo; lightbox per open question 2.
 - **4D FAQ and Footer:** six placeholder pairs per language in native `<details>`; placeholder social links.
 
-Per group: component specs, E2E reaching each section id, section content present in prerendered HTML, `i18n:check`, and axe on mobile and desktop in both themes and locales.
+Per group: component specs, E2E reaching each section id, section content present in prerendered HTML, `i18n:check`, and axe on mobile and desktop in both themes and locales. Attach Playwright screenshots (390 px and 1440 px, both themes and locales) to the gate report as review evidence; there is no pixel-diff gate until a baseline exists.
 
 ### Stage 5 tasks
 
-1. **Contact form:** unit tests for required, invalid email, loading, success, error and honeypot; E2E with Formspree mocked at the network layer, never a real request.
+1. **Contact form:** unit tests for required, invalid email, loading, success, error and honeypot; E2E with Formspree mocked at the network layer, never a real request. Include a `[PLACEHOLDER]` privacy-notice line near the form (visitor data goes to Formspree), translated in both locales.
 2. **Back to top:** unit and E2E keyboard activation.
 3. **Preferences:** E2E that theme and language survive reload.
 4. **Mutation run:** on the language resolver, theme service and form validation; record survivors.
 
 ### Stage 6 tasks
 
-SEO service and metadata, sitemap, robots, favicon; README (Formspree setup, hosting prerequisites, any `ngSkipHydration` use); CI workflows running from the repository root with `cache-dependency-path: package-lock.json`; full regression, axe and Lighthouse reports; list of remaining placeholders and launch prerequisites.
+SEO service and metadata, sitemap, robots, favicon; README (Formspree setup, hosting prerequisites, any `ngSkipHydration` use); CI workflows running from the repository root with `cache-dependency-path: package-lock.json`; full regression, axe and Lighthouse reports; list of remaining placeholders and launch prerequisites (including the privacy policy). Security headers in `vercel.json` (CSP allowing the inline theme script by hash, `X-Content-Type-Options`, `Referrer-Policy`); verify the no-flash theme script still works under the CSP.
 
 ## Decisions
 
@@ -104,7 +105,8 @@ Defaults chosen while the user was unavailable; change them here before the affe
 - **Gate review:** Orchestrator plus an independent read-only review of the stage diff before a gate is declared passed.
 - **Placeholder marker:** non-final copy starts with `[PLACEHOLDER]` in each language; non-copy placeholders (URLs, email, social links) use constants named with a `PLACEHOLDER_` prefix and a comment.
 - **Accessibility and performance automation, mutation tool, Vercel previews:** see [Testing](technical/testing.md) and [Technical requirements](technical/technical-requirements.md#preview-deployments).
-- **Production hosting:** undecided; no auto-deploy workflow without separate approval.
+- **Production hosting:** undecided; no auto-deploy workflow without separate approval. Stage 2 stays host-agnostic: a generated root page plus `vercel.json` for previews, with the rewrite rules any other static host would need documented in the README.
+- **Definition of done:** a task is done only when each item is evidenced in the gate report (a skipped check means not done): acceptance criteria marked met/unmet; the quality gate passed; new behavior has a meaningful test and bug fixes a regression test; SSR safety (guarded browser APIs, `ngh` markers); i18n markers with Polish translated or `[PLACEHOLDER]`; accessibility (roles, keyboard, focus, reduced motion) checked for touched UI; dependency direction respected; no invented business facts; Orchestrator re-ran the checks and inspected the diff.
 - **Defaults applied while the user was unavailable:** lightbox is deferred from the first release (Modal is still built); logo is recreated as SVG from the business card; the independent stage reviewer is the read-only `code-review` agent.
 
 ## Open questions
@@ -121,7 +123,7 @@ Ask once, consolidated, in the planning phase of the stage that needs the answer
 - Exploration: no user questions; record unknowns. Planning: consolidated essential questions only.
 - One Executor handoff per task. The Orchestrator inspects the diff and re-runs the task checks; at most two correction cycles per task, counted across Executor and Orchestrator.
 - After a stage's tasks, run the full gate, collect evidence, and get the independent review. Fix findings within the cycle limit.
-- Use the `branch-naming`, `commit-changes`, `push-changes` and `pull-request-description` skills only on a separate user request; `push-changes` requires a successful application build.
+- Orchestrator may use `branch-naming` at the start of a stage and `commit-changes` after a task passes its checks, reporting each action to the user. `push-changes` (requires a successful `npm run build`) and `pull-request-description` still need an explicit user request.
 - The agent definitions pin specific models; if one is unavailable, report it instead of substituting silently.
 
 ### Executor handoff template
@@ -165,4 +167,4 @@ Correction cycles used:
 
 ## Skills
 
-Use only on an explicit user request: `branch-naming` when starting a branch, `commit-changes` after a task passes its checks, `push-changes` only after a successful `npm run build`, `pull-request-description` at the end of a stage using the gate evidence report. The `playwright-explore-website` and `playwright-generate-test` skills are optional aids for E2E authoring; automated Playwright runs remain the evidence.
+`branch-naming` when starting a stage and `commit-changes` after a task passes its checks may be used by Orchestrator without a separate request; `push-changes` only on explicit request and after a successful `npm run build`; `pull-request-description` only on explicit request, at the end of a stage using the gate evidence report. The `playwright-explore-website` and `playwright-generate-test` skills are optional aids for E2E authoring; automated Playwright runs remain the evidence.
