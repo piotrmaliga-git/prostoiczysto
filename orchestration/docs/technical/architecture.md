@@ -6,7 +6,7 @@ Technical implementation constraints and runtime behavior are specified in [Tech
 
 ## Textual project structure
 
-The repository root contains orchestration documentation and GitHub configuration. The Angular application is scaffolded in the separate repository-root `prostoiczysto/` directory. All application paths described below are relative to that directory unless explicitly prefixed with `.github/` or `orchestration/docs/`. Do not create a second nested `prostoiczysto/` directory.
+The repository root contains orchestration documentation, GitHub configuration, Git hooks, and the Angular application. The Angular application is scaffolded directly at the repository root, next to `.github/`, `.husky/`, and `orchestration/`, so that Husky, GitHub workflows, and tooling share one root. Do not create an application subdirectory. The `orchestration/` folder stays at the repository root, unchanged, throughout and after implementation; never move, rename, or delete it. Application paths below are relative to the repository root.
 
 ```text
 repository-root/
@@ -26,52 +26,60 @@ repository-root/
 │       │   ├── technical-requirements.md
 │       │   └── testing.md
 │       └── images/
+├── .husky/
+│   ├── pre-commit
+│   └── commit-msg
+├── e2e/
+│   └── [Playwright tests and fixtures]
+├── public/
+│   ├── favicon.ico or favicon.svg
+│   ├── robots.txt
+│   └── sitemap.xml
+├── src/
+│   ├── app/
+│   │   ├── pages/
+│   │   ├── components/
+│   │   ├── shared/
+│   │   │   └── ui/
+│   │   ├── routes/
+│   │   ├── service/
+│   │   ├── pipes/
+│   │   └── utils/
+│   │       ├── constants/
+│   │       ├── enums/
+│   │       ├── interfaces/
+│   │       ├── translations/
+│   │       └── types/
+│   ├── assets/
+│   │   ├── images/
+│   │   └── fonts/
+│   ├── locale/
+│   │   ├── messages.xlf
+│   │   └── messages.pl.xlf
+│   ├── environments/
+│   │   ├── environment.ts
+│   │   └── environment.development.ts
+│   ├── styles/
+│   ├── index.html
+│   ├── main.ts
+│   ├── main.server.ts
+│   └── server.ts
+├── .gitignore
+├── .nvmrc
 ├── README.md
-└── prostoiczysto/
-    ├── e2e/
-    │   └── [Playwright tests and fixtures]
-    ├── public/
-    │   ├── favicon.ico or favicon.svg
-    │   ├── robots.txt
-    │   └── sitemap.xml
-    ├── src/
-    │   ├── app/
-    │   │   ├── pages/
-    │   │   ├── components/
-    │   │   ├── shared/
-    │   │   │   └── ui/
-    │   │   ├── routes/
-    │   │   ├── service/
-    │   │   ├── pipes/
-    │   │   └── utils/
-    │   │       ├── constants/
-    │   │       ├── enums/
-    │   │       ├── interfaces/
-    │   │       ├── translations/
-    │   │       └── types/
-    │   ├── assets/
-    │   │   ├── images/
-    │   │   └── fonts/
-    │   ├── locale/
-    │   │   ├── messages.xlf
-    │   │   └── messages.pl.xlf
-    │   ├── environments/
-    │   │   ├── environment.ts
-    │   │   └── environment.development.ts
-    │   ├── styles/
-    │   ├── index.html
-    │   ├── main.ts
-    │   └── main.server.ts
-    ├── angular.json
-    ├── package.json
-    ├── package-lock.json
-    ├── tsconfig.app.json
-    ├── tsconfig.spec.json
-    ├── vitest.config.ts
-    └── playwright.config.ts
+├── angular.json
+├── package.json
+├── package-lock.json
+├── commitlint.config.js
+├── tsconfig.json
+├── tsconfig.app.json
+├── tsconfig.spec.json
+├── vitest.config.ts
+├── playwright.config.ts
+└── vercel.json
 ```
 
-The exact scaffold may place SSR and server configuration files in additional Angular-generated locations. Do not move or rename the application layers above unless a task explicitly updates this architecture. Repository-level GitHub workflows must run application commands from `prostoiczysto/`.
+The exact scaffold may place SSR and server configuration files in additional Angular-generated locations. Do not move or rename the application layers above unless a task explicitly updates this architecture. GitHub workflows run application commands from the repository root.
 
 ## Folder responsibilities
 

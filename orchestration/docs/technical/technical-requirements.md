@@ -2,7 +2,7 @@
 
 This document defines the application's technical constraints and cross-cutting requirements. Project structure and responsibility boundaries are documented separately in [Project architecture](./architecture.md). Key test behaviors are documented separately in [Testing](./testing.md). Visitor-facing behavior is specified in [Product requirements](../product/product-requirements.md).
 
-Unless stated otherwise, application paths in this document are relative to the repository-root `prostoiczysto/` directory.
+Unless stated otherwise, application paths in this document are relative to the repository root.
 
 ## Stack and engineering constraints
 
@@ -19,7 +19,7 @@ Unless stated otherwise, application paths in this document are relative to the 
 - Use the latest stable Tailwind CSS at scaffold time plus CSS variables for theming.
 - Use Angular's built-in compile-time i18n with `@angular/localize`. Do not add Transloco or another runtime translation library.
 - Use Vitest for unit/component tests and Playwright for E2E tests; see [Testing](./testing.md).
-- Follow Angular conventions and [Project architecture](./architecture.md). Run application commands from the repository-root `prostoiczysto/` directory.
+- Follow Angular conventions and [Project architecture](./architecture.md). Run application commands from the repository root.
 - Use Oxlint for linting and Oxfmt for formatting. They are separate Oxc tools: `npm run lint` runs `oxlint`, and `npm run format:check` runs `oxfmt --check`. Do not install or configure ESLint or Prettier.
 - Guard browser-only API calls (`localStorage`, `window`, `document`, `matchMedia`, `IntersectionObserver`) with `isPlatformBrowser` or `afterNextRender`, so SSR/prerender does not break.
 - Do not use `ng new` interactive prompts; pass all flags explicitly for a reproducible scaffold.
@@ -108,7 +108,7 @@ Run gates sequentially: a gate starts only after the previous gate passes, and a
 
 ### Local Git hooks
 
-When the application and package manifest are scaffolded, configure Husky to install repository-level Git hooks from the application package. The `pre-commit` hook must run `npm run lint` and `npm run format:check` from the application directory, blocking the commit if either fails. Formatting is checked, not automatically changed.
+When the application and package manifest are scaffolded, configure Husky (`.husky/` at the repository root) to install Git hooks from the root package. The `pre-commit` hook must run `npm run lint` and `npm run format:check`, blocking the commit if either fails. Formatting is checked, not automatically changed.
 
 The `commit-msg` hook must run Commitlint against the proposed commit message as described below. These hooks are local commit-time checks and do not replace the pull-request CI gates.
 
@@ -172,8 +172,8 @@ Upload build and test artifacts when a gate fails. Do not deploy automatically u
 
 Vercel is used for first-look preview deployments only; production hosting, domain and DNS remain undecided, and no auto-deploy workflow is added without separate approval.
 
-- Set the Vercel Root Directory to `prostoiczysto`, install with `npm ci`, build with `npm run build`, and serve the static prerendered output containing `en/` and `pl/` (confirm the exact path at scaffold time). Do not add a Node SSR function.
-- Add `prostoiczysto/vercel.json` with `cleanUrls`, a rule serving the generated root page for `/`, and a catch-all serving the Polish `404.html`, with `/en/*` serving the English one.
+- Keep the Vercel Root Directory at the repository root, install with `npm ci`, build with `npm run build`, and serve the static prerendered output containing `en/` and `pl/` (confirm the exact path at scaffold time). Do not add a Node SSR function.
+- Add `vercel.json` with `cleanUrls`, a rule serving the generated root page for `/`, and a catch-all serving the Polish `404.html`, with `/en/*` serving the English one.
 - Send `X-Robots-Tag: noindex` on non-production hosts. Keep canonical, hreflang and sitemap on the planned production origin.
 - Run read-only Playwright smoke tests against a preview with `PLAYWRIGHT_BASE_URL` (routes, section ids, language switch, theme, no console errors). Previews do not replace the CI gates.
 
