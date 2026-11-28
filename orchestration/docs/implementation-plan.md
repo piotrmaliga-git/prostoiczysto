@@ -81,7 +81,7 @@ Quality gate (QG) = `npm run build`, `npm run lint`, `npm run format:check`, `np
 
 - **4A Header and Hero:** navigation order, smooth scroll, mobile menu, language switcher, theme toggle, skip link, CSS-only record animation.
 - **4B About and Machines:** machine data in one constants file; external link attributes; no link without a URL.
-- **4C Gallery and Pricing:** responsive lazy images with translated alt text; 5 zł and 30 zł; combo card per open question 1; lightbox per open question 3.
+- **4C Gallery and Pricing:** responsive lazy images with translated alt text; 5 zł and 30 zł; two pricing cards only, no combo; lightbox per open question 2.
 - **4D FAQ and Footer:** six placeholder pairs per language in native `<details>`; placeholder social links.
 
 Per group: component specs, E2E reaching each section id, section content present in prerendered HTML, `i18n:check`, and axe on mobile and desktop in both themes and locales.
@@ -105,16 +105,16 @@ Defaults chosen while the user was unavailable; change them here before the affe
 - **Placeholder marker:** non-final copy starts with `[PLACEHOLDER]` in each language; non-copy placeholders (URLs, email, social links) use constants named with a `PLACEHOLDER_` prefix and a comment.
 - **Accessibility and performance automation, mutation tool, Vercel previews:** see [Testing](technical/testing.md) and [Technical requirements](technical/technical-requirements.md#preview-deployments).
 - **Production hosting:** undecided; no auto-deploy workflow without separate approval.
+- **Defaults applied while the user was unavailable:** lightbox is deferred from the first release (Modal is still built); logo is recreated as SVG from the business card; the independent stage reviewer is the read-only `code-review` agent.
 
 ## Open questions
 
 Ask once, consolidated, in the planning phase of the stage that needs the answer.
 
-1. **Stage 4:** should the combo pricing card show a price, a "contact us" message, or be removed? Until answered, render it with a marked placeholder and no price.
-2. **Stage 2:** production hosting for the root page and per-locale 404 (previews use Vercel).
-3. **Stage 4:** is the lightbox in scope for the first release?
-4. **Stage 6:** are the domain, DNS and contact email confirmed?
-5. **Stage 3:** is a vector logo available, or should the mark be recreated from the business card?
+1. **Stage 2:** production hosting for the root page and per-locale 404 (previews use Vercel).
+2. **Stage 4:** is the lightbox in scope for the first release?
+3. **Stage 6:** are the domain, DNS and contact email confirmed?
+4. **Stage 3:** is a vector logo available, or should the mark be recreated from the business card?
 
 ## Orchestration rules
 
@@ -156,6 +156,13 @@ Correction cycles used:
 - The localized build emits only `/en` and `/pl`: `/` and the per-locale 404 need explicit handling.
 - Scaffolding at the repository root may overwrite or conflict with existing files (`README.md`, `.gitignore`); merge them deliberately.
 - Oxlint and Oxfmt may not fully cover Angular templates.
-- Pricing lists a combo card but gives no combo price (open question 1).
 - The "fail on console errors" E2E rule conflicts with the placeholder Formspree URL unless the request is mocked.
 - Hydration console checks need the dev or SSR build; production builds do not log them.
+- Stryker's Vitest runner needs a plain Vitest config and may not run zoneless component tests; fallback is a separate plain-Vitest config for pure logic only, with the limitation recorded.
+- Oxfmt/Oxlint may not cover Angular templates; record the actual coverage in Stage 1 and rely on strict template compilation and `i18n:check` for the rest.
+- Merge-to-main skips lint, translations, axe and mutation by design; the preceding pull request already gates them.
+- `LocalBusiness` JSON-LD needs address, phone and email; keep them as `PLACEHOLDER_` constants and report them as launch prerequisites.
+
+## Skills
+
+Use only on an explicit user request: `branch-naming` when starting a branch, `commit-changes` after a task passes its checks, `push-changes` only after a successful `npm run build`, `pull-request-description` at the end of a stage using the gate evidence report. The `playwright-explore-website` and `playwright-generate-test` skills are optional aids for E2E authoring; automated Playwright runs remain the evidence.

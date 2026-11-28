@@ -57,10 +57,9 @@ Keep the section order below. It follows the intended landing-page flow: hook, i
    - An optional lightbox may use the shared Modal and must support Escape, arrow-key navigation, focus trapping, and focus return to the trigger.
    - Gallery intentionally precedes Pricing: show results first, then price.
 5. **Pricing**
-   - Three cards: cleaning, flattening, and combo. Prices are per record, in PLN:
+   - Two cards: cleaning and flattening. There is no combo plan. Prices are per record, in PLN:
      - Cleaning: **5 zł**
      - Flattening: **30 zł**
-     - No combo price
    - Each card has a CTA that scrolls to Contact.
 6. **FAQ**
    - Accessible accordion with six clearly marked placeholder question/answer pairs in both languages. Cover service time, eligible records, suitable warps, handover or shipping, larger-batch discounts, and risks or guarantees.
