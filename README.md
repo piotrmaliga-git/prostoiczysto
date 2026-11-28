@@ -25,7 +25,7 @@ The site promotes vinyl record cleaning and flattening. Polish is the primary la
 ## Operating rules
 
 - Use the technical architecture as the implementation authority for the Angular stack, SSR, hydration, SEO, accessibility, and tooling.
-- Pull requests run build, Oxlint/Oxfmt lint and format checks, translation validation, unit, and E2E checks as sequential gates. Merges to `main` run build, unit, and E2E checks sequentially. Any failed gate stops the pipeline.
+- Pull requests run build, Oxlint/Oxfmt lint and format checks, translation validation, accessibility (axe), unit, mutation (Stryker), and E2E checks as sequential gates. Merges to `main` run build, unit, and E2E checks sequentially. Any failed gate stops the pipeline.
 - Make implementation decisions in small, independently verifiable steps.
 - Do not ask the user questions during exploration. Record missing information for planning, where essential scope or material decisions can be asked in a consolidated set. If implementation reveals a detail that needs verification, return it to Orchestrator to investigate project sources and patterns, and consult the user only if an essential decision remains; do not guess. Pause only affected work until it receives verified guidance.
 - Run relevant build, lint, unit, and browser checks after changes.

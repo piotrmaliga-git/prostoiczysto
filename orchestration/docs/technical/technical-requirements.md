@@ -151,10 +151,12 @@ Run these checks sequentially for pull requests targeting the main branch:
 1. **Build** — install dependencies and produce a complete Angular SSR/prerender build. Stop on dependency installation, compilation, prerendering, or build failure.
 2. **Lint and format** — run `npm run lint` and `npm run format:check` (Oxlint and Oxfmt). Do not install or configure ESLint or Prettier.
 3. **Check translations** — validate the Polish XLIFF catalog against the extracted English source messages. Stop on missing or duplicate translations, or unresolved placeholder messages.
-4. **Unit tests** — run the focused Vitest suite for application behavior.
-5. **E2E tests** — run Playwright for `/pl` and `/en`; fail on a failed user-flow test, console error, or hydration warning.
+4. **Check accessibility** — run the axe Playwright suite (`npm run a11y`) against the production build for `/pl` and `/en`, both themes, and mobile and desktop viewports. Stop on any WCAG 2 A/AA violation.
+5. **Unit tests** — run the focused Vitest suite for application behavior.
+6. **Mutation tests** — run `npm run mutation` (Stryker) on the critical logic listed in [Testing](./testing.md#mutation-testing). Stop if the run fails or the initial test run fails; survivors are reported, not failed on, because no score threshold is required.
+7. **E2E tests** — run Playwright for `/pl` and `/en`; fail on a failed user-flow test, console error, or hydration warning.
 
-Run every gate against the same source revision and dependency lockfile. Upload build, test, and Playwright reports when a gate fails.
+Run every gate against the same source revision and dependency lockfile. Upload build, test, axe, mutation, and Playwright reports when a gate fails; always upload the Stryker HTML report.
 
 ### Merge to main
 
@@ -165,6 +167,15 @@ Run these checks sequentially on merges to the main branch:
 3. **E2E tests** — run Playwright against the production build and fail on a failed user-flow test, console error, or hydration warning.
 
 Upload build and test artifacts when a gate fails. Do not deploy automatically unless a separate deployment workflow and hosting configuration are added and approved.
+
+## Preview deployments
+
+Vercel is used for first-look preview deployments only; production hosting, domain and DNS remain undecided, and no auto-deploy workflow is added without separate approval.
+
+- Set the Vercel Root Directory to `prostoiczysto`, install with `npm ci`, build with `npm run build`, and serve the static prerendered output containing `en/` and `pl/` (confirm the exact path at scaffold time). Do not add a Node SSR function.
+- Add `prostoiczysto/vercel.json` with `cleanUrls`, a rule serving the generated root page for `/`, and a catch-all serving the Polish `404.html`, with `/en/*` serving the English one.
+- Send `X-Robots-Tag: noindex` on non-production hosts. Keep canonical, hreflang and sitemap on the planned production origin.
+- Run read-only Playwright smoke tests against a preview with `PLAYWRIGHT_BASE_URL` (routes, section ids, language switch, theme, no console errors). Previews do not replace the CI gates.
 
 ## SEO
 

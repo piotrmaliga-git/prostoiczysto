@@ -8,6 +8,37 @@ Use mutation testing to validate that unit and component tests detect meaningful
 
 Review surviving mutants: add or improve tests for observable behavior that should have caught them, and document equivalent or otherwise non-actionable mutants. Report the results and unresolved survivors; do not treat a mutation score alone as proof of test quality or require a numerical threshold.
 
+Tooling: evaluate Stryker with the Vitest runner in a time-boxed Stage 1 spike (`@stryker-mutator/core`, `@stryker-mutator/vitest-runner`, `stryker.config.json` with `testRunner: "vitest"`, `coverageAnalysis: "perTest"`, `mutate` limited to the language resolver, theme service and form validation; script `npm run mutation`). Use a plain Vitest config for mutation if the Angular unit-test builder is used for `npm test`. If it cannot run with zoneless component tests, restrict mutation to pure utilities and services and record the limitation. Ignore Stryker output folders in Git. Mutation runs as a pull-request CI gate after the unit tests (see [Technical requirements](./technical-requirements.md#pull-requests)) and at the Stage 5 gate. Keep it fast by limiting `mutate` to the critical files and using `--incremental` where supported.
+
+## Translation validation
+
+Provide `npm run i18n:check` (a dependency-free Node script) that:
+
+1. Extracts messages with `ng extract-i18n` to a temporary file and compares ids with `src/locale/messages.pl.xlf`.
+2. Fails on missing, stale or duplicate ids and on empty targets.
+3. Fails when a target equals its source, except for an allowlist of brand and machine names.
+4. Reports `[PLACEHOLDER]` targets as warnings, and as errors with `--strict` in the Stage 6 release gate.
+
+Also set `i18nMissingTranslation` to `error` in `angular.json`. Prove the check with a negative test (removing one Polish unit must fail it) and unit-test the parser against fixture XLIFF files.
+
+## Accessibility and performance automation
+
+- Use `@axe-core/playwright` in a shared fixture with the `wcag2a`, `wcag2aa` and `wcag21aa` tags; any violation fails the test. Expose the suite as `npm run a11y`; it is a pull-request CI gate (see [Technical requirements](./technical-requirements.md#pull-requests)) and also runs locally at the Stage 3 and Stage 4 gates. Run it for `/pl` and `/en`, light and dark themes, mobile and desktop viewports, and with the mobile menu, a toast and the lightbox open. Exclusions need a written reason. Automated checks do not replace the manual keyboard, contrast and reduced-motion checks below.
+- In Stage 6, run `@lhci/cli` against the production build for both locales: accessibility and SEO at least 0.95, best practices at least 0.9, CLS at most 0.1; record performance as a warning until a baseline exists. Lighthouse is not a required pull-request gate unless the CI section is updated.
+
+## Traceability
+
+| Requirement area | Unit/component | E2E | Other |
+|---|---|---|---|
+| Root language resolution | resolver util | `/` with seeded `localStorage` and browser locale | mutation |
+| Direct route precedence | route test | `/pl` and `/en` with the opposite saved preference | |
+| Language switch | switcher and hash | full navigation, hash, `lang`, storage | |
+| Theme | service, toggle | reload persistence, no flash | axe both themes, mutation |
+| Navigation and mobile menu | open, close, Escape, link | keyboard flow | axe |
+| Machines, Pricing, Gallery, FAQ | content, links, alt text | section reachable and prerendered | `i18n:check` |
+| Contact | validation and states | Formspree mocked for success and error | mutation |
+| SSR and hydration | — | console and hydration listener | `ngh` markers in HTML |
+| SEO | SEO service | metadata per locale | sitemap, robots, Lighthouse |
 ## Unit and component acceptance tests
 
 Cover these behaviors:
