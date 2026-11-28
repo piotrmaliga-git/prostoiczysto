@@ -1,6 +1,6 @@
 # Prosto i Czysto — project overview
 
-This is the repository-level entry point and source map for the Prosto i Czysto landing-page project. Project orchestration documentation belongs in `orchestration/docs/`, while the Angular application is generated in the separate repository-root `prostoiczysto/` directory. Keep GitHub configuration at the repository root.
+This is the repository-level entry point and source map for the Prosto i Czysto landing-page project. Project orchestration documentation belongs in `orchestration/docs/`, while the Angular application is generated directly at the repository root (alongside `.github/` and `.husky/`), not in a subdirectory.
 
 ## Start here
 
@@ -31,7 +31,7 @@ The site promotes vinyl record cleaning and flattening. Polish is the primary la
 - Run relevant build, lint, unit, and browser checks after changes.
 - If something is ambiguous or an asset is missing or unreadable, do not guess silently: preserve the relevant placeholder and record it only in the designated product or technical document.
 - Keep the implementation simple, follow Angular conventions, separate responsibilities appropriately, and prefer maintainable solutions over unnecessary complexity.
-- Keep source code and developer-facing identifiers in English. English is the Angular i18n source locale: mark template copy with Angular's built-in i18n and TypeScript strings with `$localize`, then maintain the extracted Polish XLIFF translations in `prostoiczysto/src/locale/`.
+- Keep source code and developer-facing identifiers in English. English is the Angular i18n source locale: mark template copy with Angular's built-in i18n and TypeScript strings with `$localize`, then maintain the extracted Polish XLIFF translations in `src/locale/`.
 - Direct `/pl` and `/en` routes determine the displayed language. On `/`, match Polish or English device browser languages and fall back to Polish for unsupported locales.
 
 ## Precedence

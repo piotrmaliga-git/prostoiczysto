@@ -17,7 +17,7 @@ The application has not yet been scaffolded. All stages below are pending.
 
 ### 1. Foundation — pending
 
-Scaffold the Angular application in the repository-root `prostoiczysto/` directory. Set up the documented runtime and npm versions, lockfile, SSR-capable build, Oxlint, Oxfmt, Vitest, Playwright, and local Husky hooks with Commitlint.
+Scaffold the Angular application directly at the repository root (preserving `.github/` and `orchestration/`), not in a subdirectory. Set up the documented runtime and npm versions, lockfile, SSR-capable build, Oxlint, Oxfmt, Vitest, Playwright, and local Husky hooks with Commitlint.
 
 **Gate:** The application builds; lint and format checks pass; the test runners can execute a focused smoke test; the local pre-commit and commit-msg hooks enforce the documented checks. Record the commands and results.
 
@@ -53,14 +53,14 @@ Complete SEO, accessibility, translation validation, CI workflows, documentation
 
 ## Stage task breakdown
 
-Quality gate (QG) = `npm run build`, `npm run lint`, `npm run format:check`, `npm test` from `prostoiczysto/`. Add `npm run i18n:check` after Stage 2 and `npm run e2e` once the first E2E test exists; add `npm run a11y` once the first axe test exists (Stage 3). Tasks within a stage run in order; each is validated before the next.
+Quality gate (QG) = `npm run build`, `npm run lint`, `npm run format:check`, `npm test` from the repository root. Add `npm run i18n:check` after Stage 2 and `npm run e2e` once the first E2E test exists; add `npm run a11y` once the first axe test exists (Stage 3). Tasks within a stage run in order; each is validated before the next.
 
 ### Stage 1 tasks
 
-1. **Scaffold:** non-interactive `ng new` flags (standalone, zoneless, SSR); pinned Node/npm in `.nvmrc`, `engines`, and `packageManager`. Check: build; `npm ci` from a clean clone; no nested `prostoiczysto/prostoiczysto`.
+1. **Scaffold:** non-interactive `ng new` flags (standalone, zoneless, SSR); pinned Node/npm in `.nvmrc`, `engines`, and `packageManager`. Check: build; `npm ci` from a clean clone; application files live at the repository root, with `.github/` and `orchestration/` preserved (use `ng new` into a temporary directory and move files if needed).
 2. **Tooling:** Oxlint, Oxfmt, Tailwind and scripts. Check lint and format; record what Oxlint/Oxfmt cover in Angular templates (`@if`, `@for`, `i18n`). Do not add ESLint or Prettier.
 3. **Test runners:** Vitest smoke test, Playwright config and smoke test. Spike Stryker (see [Testing](technical/testing.md#mutation-testing)) and record the command or its limits.
-4. **Hooks:** Husky pre-commit and commit-msg configured for an app in a subdirectory of the Git root. Prove on a temporary branch that a lint error is rejected, a non-conventional message is rejected, and a valid commit passes.
+4. **Hooks:** Husky pre-commit and commit-msg configured at the Git root (`.husky/` and `prepare` script in the root `package.json`). Prove on a temporary branch that a lint error is rejected, a non-conventional message is rejected, and a valid commit passes.
 
 ### Stage 2 tasks
 
@@ -95,7 +95,7 @@ Per group: component specs, E2E reaching each section id, section content presen
 
 ### Stage 6 tasks
 
-SEO service and metadata, sitemap, robots, favicon; README (Formspree setup, hosting prerequisites, any `ngSkipHydration` use); CI workflows with `working-directory: prostoiczysto` and `cache-dependency-path: prostoiczysto/package-lock.json`; full regression, axe and Lighthouse reports; list of remaining placeholders and launch prerequisites.
+SEO service and metadata, sitemap, robots, favicon; README (Formspree setup, hosting prerequisites, any `ngSkipHydration` use); CI workflows running from the repository root with `cache-dependency-path: package-lock.json`; full regression, axe and Lighthouse reports; list of remaining placeholders and launch prerequisites.
 
 ## Decisions
 
@@ -154,7 +154,7 @@ Correction cycles used:
 ## Risks to watch
 
 - The localized build emits only `/en` and `/pl`: `/` and the per-locale 404 need explicit handling.
-- Husky installed from `prostoiczysto/` may not fire when the Git root is the repository root.
+- Scaffolding at the repository root may overwrite or conflict with existing files (`README.md`, `.gitignore`); merge them deliberately.
 - Oxlint and Oxfmt may not fully cover Angular templates.
 - Pricing lists a combo card but gives no combo price (open question 1).
 - The "fail on console errors" E2E rule conflicts with the placeholder Formspree URL unless the request is mocked.
