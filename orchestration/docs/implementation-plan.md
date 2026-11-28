@@ -17,7 +17,7 @@ The application has not yet been scaffolded. All stages below are pending.
 
 ### 1. Foundation — pending
 
-Scaffold the Angular application directly at the repository root (preserving `.github/` and `orchestration/`), not in a subdirectory. Set up the documented runtime and npm versions, lockfile, SSR-capable build, Oxlint, Oxfmt, Vitest, Playwright, and local Husky hooks with Commitlint.
+Scaffold the Angular application directly at the repository root (preserving `.github/` and leaving `orchestration/` untouched at the repository root), not in a subdirectory. Set up the documented runtime and npm versions, lockfile, SSR-capable build, Oxlint, Oxfmt, Vitest, Playwright, and local Husky hooks with Commitlint.
 
 **Gate:** The application builds; lint and format checks pass; the test runners can execute a focused smoke test; the local pre-commit and commit-msg hooks enforce the documented checks. Record the commands and results.
 

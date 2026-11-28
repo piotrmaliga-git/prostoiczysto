@@ -40,7 +40,7 @@ During exploration and planning owned by Orchestrator, Executor should not ask t
 - Use Vitest for unit tests, Oxlint for linting, and Oxfmt for formatting. Do not add ESLint or Prettier.
 - Use `orchestration/docs/images/photo_ex.jpg` as the shared temporary source image for About, Machines, and Gallery unless the task explicitly changes this requirement.
 - Use npm and the configured project scripts for Node.js work. Do not assume the app or its scripts exist; inspect the workspace first.
-- The Angular application is generated directly at the repository root, next to `.github/`, `.husky/`, `orchestration/`, and `README.md`; do not create an application subdirectory. Keep `orchestration/docs/` and `.github/` intact when scaffolding.
+- The Angular application is generated directly at the repository root, next to `.github/`, `.husky/`, `orchestration/`, and `README.md`; do not create an application subdirectory. Keep `.github/` intact and leave the `orchestration/` folder unchanged at the repository root during and after implementation; never move or delete it.
 
 ## Boundaries
 

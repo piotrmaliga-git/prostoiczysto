@@ -6,7 +6,7 @@ Technical implementation constraints and runtime behavior are specified in [Tech
 
 ## Textual project structure
 
-The repository root contains orchestration documentation, GitHub configuration, Git hooks, and the Angular application. The Angular application is scaffolded directly at the repository root, next to `.github/`, `.husky/`, and `orchestration/`, so that Husky, GitHub workflows, and tooling share one root. Do not create an application subdirectory. Application paths below are relative to the repository root.
+The repository root contains orchestration documentation, GitHub configuration, Git hooks, and the Angular application. The Angular application is scaffolded directly at the repository root, next to `.github/`, `.husky/`, and `orchestration/`, so that Husky, GitHub workflows, and tooling share one root. Do not create an application subdirectory. The `orchestration/` folder stays at the repository root, unchanged, throughout and after implementation; never move, rename, or delete it. Application paths below are relative to the repository root.
 
 ```text
 repository-root/
