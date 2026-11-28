@@ -2,6 +2,12 @@
 
 Use Vitest for unit and component tests and Playwright for browser-level E2E tests. Test key behavior and critical regressions; no numerical coverage percentage is required.
 
+## Mutation testing
+
+Use mutation testing to validate that unit and component tests detect meaningful changes in application behavior. Once the application and test tooling are scaffolded, run mutation tests on the relevant changed logic after the Vitest suite passes, prioritizing critical behavior such as language resolution, theme preferences, and form validation.
+
+Review surviving mutants: add or improve tests for observable behavior that should have caught them, and document equivalent or otherwise non-actionable mutants. Report the results and unresolved survivors; do not treat a mutation score alone as proof of test quality or require a numerical threshold.
+
 ## Unit and component acceptance tests
 
 Cover these behaviors:
@@ -43,6 +49,8 @@ const util = {
 ```
 
 ## Browser acceptance tests
+
+The Playwright MCP server is available for interactive browser exploration when creating E2E tests. Its use is optional and does not replace automated Playwright test runs.
 
 Verify:
 

@@ -12,6 +12,7 @@ The site promotes vinyl record cleaning and flattening. Polish is the primary la
 - [Design and assets](orchestration/docs/product/design-and-assets.md) — Visual direction and source-image guidance.
 ### Technical documentation
 
+- [Implementation plan](orchestration/docs/implementation-plan.md) — Stages, validation gates, and implementation status.
 - [Project architecture](orchestration/docs/technical/architecture.md) — Repository structure, Angular layers, responsibilities, and dependency direction.
 - [Technical requirements](orchestration/docs/technical/technical-requirements.md) — Stack, SSR/hydration, CI/CD, SEO, and accessibility.
 - [Testing](orchestration/docs/technical/testing.md) — Key unit, component, browser, and hydration acceptance checks.
