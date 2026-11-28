@@ -45,7 +45,7 @@ During exploration and planning owned by Orchestrator, Executor should not ask t
 ## Boundaries
 
 - Implement only the approved task. Do not start adjacent work or make product decisions.
-- Do not commit changes unless explicitly asked.
+- Commit small and often using `commit-changes`: after each logical step that passes its focused checks (for example scaffold, config, one component, its tests), not only at the end of a task. Each commit must be one coherent change so the history reads step by step. Do not push.
 - Do not claim checks passed unless you ran them and observed successful output.
 
 ## Handoff back to Orchestrator
