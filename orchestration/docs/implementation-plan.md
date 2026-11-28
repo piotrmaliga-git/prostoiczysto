@@ -9,6 +9,7 @@ This roadmap divides implementation into validated stages. The [product requirem
 - Update the relevant status as work progresses. A stage may be split into smaller tasks, each with focused validation.
 - Keep unconfirmed business details as marked placeholders. Do not copy reference-site branding or invent customer-facing facts.
 - Commits and pushes require a separate user request.
+- Follow the task breakdown, handoff template, and gate evidence rules below.
 
 ## Status
 
@@ -48,4 +49,113 @@ Complete and verify navigation, preferences, contact submission, and other requi
 
 Complete SEO, accessibility, translation validation, CI workflows, documentation, and remaining regression checks. Keep deployment and unconfirmed business details within the documented boundaries.
 
-**Gate:** The documented build, lint, formatting, translation, unit, and E2E gates pass; SSR, hydration, accessibility, and SEO acceptance checks are reviewed; remaining launch prerequisites and placeholders are reported.
+**Gate:** The documented build, lint, formatting, translation, accessibility (axe), unit, mutation (Stryker), and E2E gates pass; SSR, hydration, accessibility, and SEO acceptance checks are reviewed; remaining launch prerequisites and placeholders are reported.
+
+## Stage task breakdown
+
+Quality gate (QG) = `npm run build`, `npm run lint`, `npm run format:check`, `npm test` from `prostoiczysto/`. Add `npm run i18n:check` after Stage 2 and `npm run e2e` once the first E2E test exists; add `npm run a11y` once the first axe test exists (Stage 3). Tasks within a stage run in order; each is validated before the next.
+
+### Stage 1 tasks
+
+1. **Scaffold:** non-interactive `ng new` flags (standalone, zoneless, SSR); pinned Node/npm in `.nvmrc`, `engines`, and `packageManager`. Check: build; `npm ci` from a clean clone; no nested `prostoiczysto/prostoiczysto`.
+2. **Tooling:** Oxlint, Oxfmt, Tailwind and scripts. Check lint and format; record what Oxlint/Oxfmt cover in Angular templates (`@if`, `@for`, `i18n`). Do not add ESLint or Prettier.
+3. **Test runners:** Vitest smoke test, Playwright config and smoke test. Spike Stryker (see [Testing](technical/testing.md#mutation-testing)) and record the command or its limits.
+4. **Hooks:** Husky pre-commit and commit-msg configured for an app in a subdirectory of the Git root. Prove on a temporary branch that a lint error is rejected, a non-conventional message is rejected, and a valid commit passes.
+
+### Stage 2 tasks
+
+1. **Localized builds:** English source at `/en`, Polish at `/pl`, both prerendered. Check `<html lang>` and `ngh` markers in the built output.
+2. **Root resolution:** pure resolver plus redirect and `<noscript>` link. The localized build does not emit `/`, so a generated root page or host rewrite is required. Unit-test saved preference, `pl`, `pl-PL`, `en`, `en-US`, an unsupported locale, and a missing locale; SSR must not touch browser APIs.
+3. **Localized 404:** lazy `**` route; one 404 per locale and a Polish fallback.
+4. **i18n tooling:** `i18n:extract` and `i18n:check` (see [Testing](technical/testing.md#translation-validation)).
+5. **Hydration baseline:** a shared Playwright fixture failing on console errors, hydration warnings and NG0506; prove it fails on a forced error.
+
+### Stage 3 tasks
+
+1. **Tokens and themes:** CSS variables from the business-card palette, deliberately designed light and dark, inline no-flash script touching only `<html>`. Check reload with a persisted theme and AA contrast.
+2. **Theme service:** signals-based, SSR-safe, `aria-pressed`. Unit tests for system default, persisted preference, toggle.
+3. **UI kit** in this order: Button, Card, SectionHeading, Icon, FormField, Accordion, Toast, Modal. One spec per control; Modal covers focus trap, Escape and focus return; Toast covers roles.
+4. **Dependency rules:** a lint or script check that `shared/ui` imports nothing from pages or components; prove it fails on a violating import.
+
+### Stage 4 tasks (each group has its own mini-gate)
+
+- **4A Header and Hero:** navigation order, smooth scroll, mobile menu, language switcher, theme toggle, skip link, CSS-only record animation.
+- **4B About and Machines:** machine data in one constants file; external link attributes; no link without a URL.
+- **4C Gallery and Pricing:** responsive lazy images with translated alt text; 5 zł and 30 zł; combo card per open question 1; lightbox per open question 3.
+- **4D FAQ and Footer:** six placeholder pairs per language in native `<details>`; placeholder social links.
+
+Per group: component specs, E2E reaching each section id, section content present in prerendered HTML, `i18n:check`, and axe on mobile and desktop in both themes and locales.
+
+### Stage 5 tasks
+
+1. **Contact form:** unit tests for required, invalid email, loading, success, error and honeypot; E2E with Formspree mocked at the network layer, never a real request.
+2. **Back to top:** unit and E2E keyboard activation.
+3. **Preferences:** E2E that theme and language survive reload.
+4. **Mutation run:** on the language resolver, theme service and form validation; record survivors.
+
+### Stage 6 tasks
+
+SEO service and metadata, sitemap, robots, favicon; README (Formspree setup, hosting prerequisites, any `ngSkipHydration` use); CI workflows with `working-directory: prostoiczysto` and `cache-dependency-path: prostoiczysto/package-lock.json`; full regression, axe and Lighthouse reports; list of remaining placeholders and launch prerequisites.
+
+## Decisions
+
+Defaults chosen while the user was unavailable; change them here before the affected stage.
+
+- **Gate review:** Orchestrator plus an independent read-only review of the stage diff before a gate is declared passed.
+- **Placeholder marker:** non-final copy starts with `[PLACEHOLDER]` in each language; non-copy placeholders (URLs, email, social links) use constants named with a `PLACEHOLDER_` prefix and a comment.
+- **Accessibility and performance automation, mutation tool, Vercel previews:** see [Testing](technical/testing.md) and [Technical requirements](technical/technical-requirements.md#preview-deployments).
+- **Production hosting:** undecided; no auto-deploy workflow without separate approval.
+
+## Open questions
+
+Ask once, consolidated, in the planning phase of the stage that needs the answer.
+
+1. **Stage 4:** should the combo pricing card show a price, a "contact us" message, or be removed? Until answered, render it with a marked placeholder and no price.
+2. **Stage 2:** production hosting for the root page and per-locale 404 (previews use Vercel).
+3. **Stage 4:** is the lightbox in scope for the first release?
+4. **Stage 6:** are the domain, DNS and contact email confirmed?
+5. **Stage 3:** is a vector logo available, or should the mark be recreated from the business card?
+
+## Orchestration rules
+
+- Exploration: no user questions; record unknowns. Planning: consolidated essential questions only.
+- One Executor handoff per task. The Orchestrator inspects the diff and re-runs the task checks; at most two correction cycles per task, counted across Executor and Orchestrator.
+- After a stage's tasks, run the full gate, collect evidence, and get the independent review. Fix findings within the cycle limit.
+- Use the `branch-naming`, `commit-changes`, `push-changes` and `pull-request-description` skills only on a separate user request; `push-changes` requires a successful application build.
+- The agent definitions pin specific models; if one is unavailable, report it instead of substituting silently.
+
+### Executor handoff template
+
+```text
+Outcome and reason:
+Acceptance criteria (observable):
+In scope (paths) / Out of scope:
+Source docs and findings (exact paths):
+Constraints: standalone, OnPush, zoneless, SSR/hydration safe, a11y, i18n markers, Vitest, Oxlint/Oxfmt, no ESLint/Prettier
+Checks to run (exact commands) and known baseline:
+Confirmed decisions / Unresolved questions (do not guess):
+Correction cycle: n of 2
+Report format: status; changed files; criteria met/unmet; commands and results; blockers; follow-up
+```
+
+### Gate evidence report
+
+```text
+Stage / task:
+Revision and Node/npm versions:
+Commands run -> result, in order:
+Skipped checks and why (a skip means the gate is not passed):
+Manual checks (viewport, theme, locale, keyboard) and findings:
+Independent review findings and resolution:
+Placeholders still open:
+Correction cycles used:
+```
+
+## Risks to watch
+
+- The localized build emits only `/en` and `/pl`: `/` and the per-locale 404 need explicit handling.
+- Husky installed from `prostoiczysto/` may not fire when the Git root is the repository root.
+- Oxlint and Oxfmt may not fully cover Angular templates.
+- Pricing lists a combo card but gives no combo price (open question 1).
+- The "fail on console errors" E2E rule conflicts with the placeholder Formspree URL unless the request is mocked.
+- Hydration console checks need the dev or SSR build; production builds do not log them.
