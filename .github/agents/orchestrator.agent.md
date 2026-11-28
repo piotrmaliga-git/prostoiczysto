@@ -54,7 +54,7 @@ Keep the handoff focused on the task; do not send unrelated project documentatio
 - Do not delegate information-only tasks or tasks that are too ambiguous to execute.
 - Do not ask Executor to expand scope or silently resolve user decisions.
 - Do not duplicate requirements in new documentation when a link to their source is sufficient.
-- Preserve unrelated user changes. Do not commit unless the user explicitly asks.
+- Preserve unrelated user changes. Commit after each implementation step passes its checks (using `commit-changes`), without waiting to be asked; do not batch steps.
 
 ## Final response
 

@@ -8,7 +8,7 @@ This roadmap divides implementation into validated stages. The [product requirem
 - Complete each stage's gate before starting dependent work. Report the exact checks and results, unresolved placeholders, and blockers; do not mark a gate passed if a check was skipped or failed.
 - Update the relevant status as work progresses. A stage may be split into smaller tasks, each with focused validation.
 - Keep unconfirmed business details as marked placeholders. Do not copy reference-site branding or invent customer-facing facts.
-- Commits are made with `commit-changes` only after a task passes its checks; pushes and pull requests require a separate user request.
+- Commit changes after each implementation step (task) is completed and passes its checks, using `commit-changes`; do not batch several steps into one commit. Pushes and pull requests require a separate user request.
 - Follow the task breakdown, handoff template, and gate evidence rules below.
 
 ## Status
