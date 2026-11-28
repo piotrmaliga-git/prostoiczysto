@@ -110,6 +110,7 @@ All kit components must follow the hydration-safe rules in [Technical requiremen
 - Endpoint URL comes from environment config and initially uses `https://formspree.io/f/YOUR_FORM_ID`.
 - Include a hidden honeypot field, a disabled/loading state while submitting, and clear error messages.
 - README must explain that the owner needs to create the Formspree form and connect it to `prostoczystowinyle@gmail.com` in the dashboard. This email is currently unconfirmed and must remain an explicitly marked placeholder until it is verified.
+- Show a clearly marked `[PLACEHOLDER]` privacy-notice line near the form, translated in both languages, stating that submitted data is processed by a third-party form service. The final privacy policy is a launch prerequisite.
 
 ### Back to top and responsive behavior
 
