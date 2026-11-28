@@ -38,3 +38,7 @@ Links may not open; use the notes above if they do not:
 - <https://dribbble.com/shots/26342459-Vinyl-Listening-Landing-Page-Concept>
 - <https://shelter.pl/> — good animations.
 - <https://lecimyposwoje.pl> — good animations and page structure.
+
+### Screen inspirations
+
+Screenshots inspired by www.lecimy.pl are stored in `../images/inspirations` (workspace path: `orchestration/docs/images/inspirations`). Use them as visual references for layout, composition, and interaction ideas only, not for colors or branding.
